@@ -1,0 +1,10 @@
+<view>
+  <view class=" custom customColor  flex_center" style="text-align:center">
+    <image src="../../../images/返回@2x.png" class="goback" bindtap="goback"></image>
+    <text style="color:#fff;" class="title">关于我们</text>
+  </view>
+<view class="empty_custom customColor" style="padding-top:{{statusBarHeight}}px"></view>
+</view>
+<view>
+<image src="../../../images/暂时用的图@2x.png" class="about404"></image>
+</view>

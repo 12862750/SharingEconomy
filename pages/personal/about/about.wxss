@@ -1,0 +1,14 @@
+.goback{
+  width:20rpx;
+  height:34rpx;
+  vertical-align: middle;
+  float:left;
+  margin-left:20rpx;
+  transform:rotate(180deg);
+}
+.about404{
+  width:430rpx;
+  display: block;
+  margin:50rpx auto;
+  padding-top:50px;
+}

@@ -1,0 +1,61 @@
+Page{
+  background:#f0f0f0;
+}
+.goback{
+  width:20rpx;
+  height:34rpx;
+  vertical-align: middle;
+  float:left;
+  margin-left:20rpx;
+  transform:rotate(180deg);
+}
+.custom::after{
+  display: block;
+  content:'';
+  height:0;
+  visibility: hidden;
+  clear:both;
+}
+.purchList{
+  padding:20rpx;
+  background:#fff; 
+  margin:20rpx;
+  border-radius:14rpx;
+  border:1px solid #f0f0f0;
+}
+.top::after{
+  display: block;
+  content:'';
+  height:0;
+  visibility: hidden;
+  clear:both;
+}
+.top,.bottom{
+  width:100%;
+  height:50rpx;
+  line-height:50rpx;
+}
+.bottom{
+  margin-top:20px;
+}
+.time{
+  font-size:14px;
+  color:#ccc;
+}
+.many{
+  color:#222;
+  font-size:14px;
+}
+.listLeft{
+  float:left;
+}
+.address{
+  margin-right:50rpx;
+}
+.topRight{
+  color:green;
+}
+.listRight{
+  float:right;
+  
+}

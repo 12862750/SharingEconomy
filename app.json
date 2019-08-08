@@ -1,0 +1,16 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/personal/personal",
+    "pages/personal/about/about",
+    "pages/personal/join/join",
+    "pages/personal/purchaseList/purchaseList",
+    "pages/apply/apply"
+  ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序展示附近网点"
+    }
+  },
+  "sitemapLocation": "sitemap.json"
+}

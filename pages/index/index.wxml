@@ -1,0 +1,42 @@
+<!--index.wxml-->
+<view class="container{{isIPX ?  ' ipx' : ''}}">
+  <view class="top-bar">
+    <view class="avatar" wx:if="{{!isSearching}}" bindtap="goToPerson">
+      <image mode="cover" src="/images/avatar.png" />
+    </view>
+    <view class="search">
+      <image class="icon" mode="cover" src="/images/search.png" />
+      <input placeholder="搜索附近的网点" bindfocus="onSearchFocus" bindblur="onSearchBlur" />
+    </view>
+  </view>
+  <view class="map-wrap">
+    <map
+      id="map"
+      longitude="{{longitude}}"
+      latitude="{{latitude}}"
+      markers="{{markers}}"
+      bindmarkertap="onMarkerTap"
+      bindtap="onMapTap"
+    >
+      <cover-view class="scan-btn" wx:if="{{!isFocus}}">
+        <cover-image class="scan-bg" src="../../images/scan_btn.png" />
+        <cover-image class="scan-icon" src="../../images/scan.png" />
+        <button bindtap="onScanTap">扫一扫</button>
+      </cover-view>
+      <cover-view class="local-btn" bindtap="onLocalTap" wx:if="{{!isFocus}}">
+        <cover-view class="outer"></cover-view>
+        <cover-view class="inner"></cover-view>
+      </cover-view>
+      <cover-view class="dot-card" wx:if="{{isFocus}}">
+        <cover-view class="name">{{curDot.name}}</cover-view>
+        <cover-view class="address">地址: {{curDot.address}}</cover-view>
+        <cover-view class="phone">
+          联系电话:
+          <cover-view class="num" data-phone="{{curDot.phone}}" bindtap="onPhoneTap">
+            {{curDot.phone}}
+          </cover-view>
+        </cover-view>
+      </cover-view>
+    </map>
+  </view>
+</view>

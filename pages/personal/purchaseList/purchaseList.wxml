@@ -1,0 +1,45 @@
+<view style="margin-bottom:20rpx;">
+  <view class=" custom customColor  flex_center" style="text-align:center;">
+    <image src="../../../images/返回@2x.png" class="goback" bindtap="goback"></image>
+    <text style="color:#fff;" class="title">订单记录</text>
+  </view>
+  <view class="empty_custom customColor" style="padding-top:{{statusBarHeight}}px"></view>
+</view>
+<view class="purchList">
+  <view class="top">
+    <p class="listLeft">
+      <span class="address">网点一</span>
+      <span>充值</span>
+    </p>
+    <p  class="listRight topRight">
+      <span class="right">完成</span>
+    </p>
+  </view> 
+ <view class="bottom">
+  <p class="listLeft time">
+   2019年8月7日 12：00：00
+  </p>
+  <p class="listRight many">
+    9.9元
+  </p>
+ </view>
+</view>
+<view class="purchList">
+  <view class="top">
+    <p class="listLeft">
+      <span class="address">网点一</span>
+      <span>充值</span>
+    </p>
+    <p  class="listRight topRight">
+      <span class="right">完成</span>
+    </p>
+  </view> 
+ <view class="bottom">
+  <p class="listLeft time">
+   2019年8月7日 12：00：00
+  </p>
+  <p class="listRight many">
+    9.9元
+  </p>
+ </view>
+</view>

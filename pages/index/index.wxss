@@ -1,0 +1,186 @@
+/**index.wxss**/
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.top-bar {
+  display: flex;
+  padding: 8rpx 18rpx;
+  align-items: center;
+}
+
+.top-bar .avatar {
+  padding: 0 20rpx;
+  height: 64rpx;
+}
+
+.top-bar .avatar image {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 100%;
+  background-color: white;
+}
+
+.top-bar .search {
+  position: relative;
+  flex: 1;
+  background-color: #ededed;
+  border-radius: 10rpx;
+  height: 60rpx;
+}
+
+.top-bar .search .icon {
+  position: absolute;
+  top: 0;
+  left: 42rpx;
+  bottom: 0;
+  margin: auto;
+  width: 34rpx;
+  height: 34rpx;
+}
+
+.top-bar .search input {
+  font-size: 26rpx;
+  height: 60rpx;
+  box-sizing: border-box;
+  padding-left: 118rpx;
+  padding-right: 42rpx;
+}
+
+.map-wrap {
+  flex: 1;
+}
+
+.map-wrap map {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.scan-btn {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 16rpx;
+  margin: auto;
+  width: 208rpx;
+  height: 208rpx;
+}
+
+.ipx .scan-btn {
+  bottom: 56rpx;
+}
+
+.scan-btn button {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 100%;
+  background-color: transparent;
+  color: #fff;
+  box-sizing: border-box;
+  font-size: 26rpx;
+  padding-top: 46rpx !important;
+  letter-spacing: 6rpx;
+}
+
+.scan-btn .scan-icon {
+  width: 39rpx;
+  height: 39rpx;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 54rpx;
+  margin: auto;
+}
+
+.scan-btn .scan-bg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.local-btn {
+  position: absolute;
+  left: 35rpx;
+  bottom: 150rpx;
+  width: 85rpx;
+  height: 85rpx;
+  background-color: #fff;
+  border-radius: 100%;
+  box-shadow: 2rpx 2rpx 20rpx #999;
+}
+
+.local-btn .outer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: 46rpx;
+  height: 46rpx;
+  border-radius: 100%;
+  display: block;
+  border: 5rpx solid #333;
+}
+
+.local-btn .inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: 18rpx;
+  height: 18rpx;
+  border-radius: 100%;
+  display: block;
+  background-color: #333;
+}
+
+.ipx .local-btn {
+  bottom: 190rpx;
+}
+
+.dot-card {
+  position: absolute;
+  left: 28rpx;
+  right: 28rpx;
+  bottom: 16rpx;
+  height: 222rpx;
+  padding-top: 42rpx;
+  background-color: #fff;
+  border-radius: 20rpx;
+  box-shadow: 2rpx 2rpx 20rpx #999;
+  color: #333;
+}
+
+.ipx .dot-card {
+  bottom: 56rpx;
+}
+
+.dot-card .name {
+  font-size: 32rpx;
+  font-weight: bold;
+  padding: 0 28rpx;
+  letter-spacing: 8rpx;
+}
+
+.dot-card .address,
+.dot-card .phone {
+  font-size: 30rpx;
+  padding: 0 26rpx;
+  letter-spacing: 4rpx;
+  margin-top: 26rpx;
+}
+
+.dot-card .phone .num {
+  display: inline;
+  letter-spacing: 0rpx;
+  color: #19a6ff;
+}

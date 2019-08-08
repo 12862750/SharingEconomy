@@ -1,0 +1,22 @@
+<view>
+  <view class=" custom customColor  flex_center" style="text-align:center">
+  <image src="../../../images/返回@2x.png" class="goback" bindtap="goback"></image>
+    <text style="color:#fff;" class="title">加入我们</text>
+  </view>
+<view class="empty_custom customColor" style="padding-top:{{statusBarHeight}}px"></view>
+</view>
+<view class="joinList">
+ <span>城市:</span>
+</view>
+<view class="joinList">
+ <span>联系人：</span>
+</view>
+<view class="joinList">
+ <span>联系电话：</span>
+</view>
+<view class="joinList">
+  <span>备注</span>
+</view>
+<view class="btn">
+  提交
+</view>
