@@ -1,0 +1,39 @@
+<full-page title="支付">
+  <view class="container">
+    <view class="content">
+      <view class="top-card">
+        <view><label>网点名称:</label>网点1</view>
+        <view><label>设备s/n:</label>123123123123</view>
+      </view>
+      <view class="cost"><label>时间费用:</label>49.00/40分钟</view>
+      <view class="pay-type">
+        选择支付方式
+        <radio-group class="pay-type-list" bindchange="onPayTypeChange">
+          <view class="pay-type-item" wx:for="{{payTypeList}}" wx:key="{{item.id}}">
+            <radio id="{{item.id}}" value="{{item.value}}" hidden checked="{{payType === item.value}}"></radio>
+            <label for="{{item.id}}">{{item.name}}</label>
+            <image class="radio-icon" src="{{tool.getRadioIcon(payType === item.value)}}" mode="aspectFill"></image>
+            <view class="addon" wx:if="{{item.value === '1'}}">
+              <image src="/images/scan_green.png" mode="aspectFill" bindtap="onScanTap"></image>
+            </view>
+            <view class="addon" wx:elif="{{item.value === '2'}}">
+              可用能量贝<text>98.00</text>个
+            </view>
+          </view>
+        </radio-group>
+      </view>
+    </view>
+  </view>
+</full-page>
+
+<wxs module="tool">
+var getRadioIcon = function(isActive) {
+  var basePath = '/images/radio';
+  var iconPath = basePath + (isActive ? '_active.png' : '.png');
+  return iconPath;
+};
+
+module.exports = {
+  getRadioIcon : getRadioIcon,
+}
+</wxs>

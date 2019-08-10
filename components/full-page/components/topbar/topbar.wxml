@@ -1,0 +1,6 @@
+<view class="top-bar">
+  <navigator open-type="navigateBack" class="back" wx:if="{{showBack}}">
+    <image src="/images/back.png" />
+  </navigator>
+  <view class="title">{{title}}</view>
+</view>

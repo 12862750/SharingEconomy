@@ -1,0 +1,8 @@
+<view class="full-page" style="padding-top: {{systemInfo.statusBarHeight}}px">
+  <top-bar title="{{title}}" />
+  <view class="content">
+    <scroll-view class="content-scroll" scroll-y enable-back-to-top>
+      <slot></slot>
+    </scroll-view>
+  </view>
+</view>

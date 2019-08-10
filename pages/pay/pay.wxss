@@ -1,0 +1,93 @@
+/* pages/apply/apply.wxss */
+.container {
+  height: 100%;
+  padding-top: 103rpx;
+  box-sizing: border-box;
+}
+
+.content {
+  height: 100%;
+  box-sizing: border-box;
+  padding: 130rpx 38rpx 0 38rpx;
+  background-color: #fff;
+  position: relative;
+}
+
+.top-card {
+  position: absolute;
+  top: -66rpx;
+  left: 28rpx;
+  right: 28rpx;
+  height: 150rpx;
+  background-color: #fff;
+  box-shadow: 4rpx 4rpx 10rpx #e3f7ef;
+  border-radius: 10rpx;
+  padding: 20rpx 34rpx;
+  box-sizing: border-box;
+  font-size: 28rpx;
+  font-weight: bold;
+  line-height: 56rpx;
+  color: #0f0f0f;
+}
+
+.top-card label {
+  width: 140rpx;
+  display: inline-block;
+  font-weight: bolder;
+}
+
+.cost {
+  font-size: 44rpx;
+  color: #53cd9a;
+  line-height: 44rpx;
+  margin-bottom: 60rpx;
+}
+
+.cost label {
+  color: #0f0f0f;
+  font-size: 32rpx;
+  display: inline-block;
+  width: 168rpx;
+}
+
+.pay-type .pay-type-list {
+  margin-top: 50rpx;
+}
+
+.pay-type .pay-type-list .pay-type-item {
+  margin-bottom: 44rpx;
+  background-color: #f8f8f9;
+  padding: 24rpx 28rpx 24rpx 84rpx;
+  position: relative;
+  font-size: 28rpx;
+  color: #121212;
+}
+
+.pay-type .pay-type-list .pay-type-item .radio-icon {
+  width: 30rpx;
+  height: 30rpx;
+  position: absolute;
+  left: 28rpx;
+  top: 50%;
+  margin-top: -15rpx;
+}
+
+.pay-type .pay-type-list .pay-type-item .addon {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 28rpx;
+  margin: auto;
+  display: flex;
+  align-items: center;
+}
+
+.pay-type .pay-type-list .pay-type-item .addon image {
+  width: 39rpx;
+  height: 39rpx;
+}
+
+.pay-type .pay-type-list .pay-type-item .addon text {
+  color: #53cd9a;
+  margin-left: 12rpx;
+}

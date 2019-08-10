@@ -1,11 +1,7 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/personal/personal",
-    "pages/personal/about/about",
-    "pages/personal/join/join",
-    "pages/personal/purchaseList/purchaseList",
-    "pages/apply/apply"
+    "pages/pay/pay"
   ],
   "permission": {
     "scope.userLocation": {
