@@ -1,12 +1,15 @@
 // pages/pay/pay.js
 import { fetchUserInfo, fetchUserBalance, fetchDeviceInfo } from '../../utils/fetch';
 
+const app = getApp();
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    isIPX: app.globalData.isIPX,
     payType: '1',
     payTypeList: [{
       id: 'pay1',
@@ -63,5 +66,8 @@ Page({
         console.log(res);
       }
     })
+  },
+  onStartTap() {
+    console.log('开启设备！！！')
   }
 })

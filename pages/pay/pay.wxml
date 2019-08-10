@@ -1,5 +1,5 @@
 <full-page title="支付">
-  <view class="container">
+  <view class="container{{isIPX ?  ' ipx' : ''}}">
     <view class="content">
       <view class="top-card">
         <view><label>网点名称:</label>网点1</view>
@@ -11,8 +11,10 @@
         <radio-group class="pay-type-list" bindchange="onPayTypeChange">
           <view class="pay-type-item" wx:for="{{payTypeList}}" wx:key="{{item.id}}">
             <radio id="{{item.id}}" value="{{item.value}}" hidden checked="{{payType === item.value}}"></radio>
-            <label for="{{item.id}}">{{item.name}}</label>
+            <label class="type-text" for="{{item.id}}">{{item.name}}</label>
+            <label for="{{item.id}}">
             <image class="radio-icon" src="{{tool.getRadioIcon(payType === item.value)}}" mode="aspectFill"></image>
+            </label>
             <view class="addon" wx:if="{{item.value === '1'}}">
               <image src="/images/scan_green.png" mode="aspectFill" bindtap="onScanTap"></image>
             </view>
@@ -22,6 +24,7 @@
           </view>
         </radio-group>
       </view>
+      <button class="start-btn" bindtap="onStartTap">开启设备</button>
     </view>
   </view>
 </full-page>

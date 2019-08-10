@@ -57,10 +57,14 @@
 .pay-type .pay-type-list .pay-type-item {
   margin-bottom: 44rpx;
   background-color: #f8f8f9;
-  padding: 24rpx 28rpx 24rpx 84rpx;
   position: relative;
   font-size: 28rpx;
   color: #121212;
+}
+
+.pay-type .pay-type-list .pay-type-item .type-text {
+  display: block;
+  padding: 24rpx 28rpx 24rpx 84rpx;
 }
 
 .pay-type .pay-type-list .pay-type-item .radio-icon {
@@ -90,4 +94,27 @@
 .pay-type .pay-type-list .pay-type-item .addon text {
   color: #53cd9a;
   margin-left: 12rpx;
+}
+
+.start-btn {
+  position: absolute;
+  width: 421rpx;
+  height: 98rpx;
+  line-height: 98rpx;
+  font-size: 34rpx;
+  color: #fff;
+  background: linear-gradient(to right, #68d98a , #41c2a9);
+  background-color: transparent;
+  margin: auto;
+  left: 0;
+  right: 0;
+  bottom: 38rpx;
+}
+
+.start-btn::after {
+  border: none;
+}
+
+.ipx .start-btn {
+  bottom: 78rpx;
 }
