@@ -1,4 +1,11 @@
+export const FETCH_CONFIG = {
+  BASE_API: 'https://api.graphenec.cn/wechat/api/web_api',
+  TOKEN: '',
+};
+
 export const API = {
+  // 登录
+  LOGIN: '/session/wetchatLogin',
   // 获取附近网点
   GET_DOT_LIST_BY_LOCATION: '/location/nearBy',
   // 获取用户信息

@@ -3,6 +3,7 @@ import { getLocationMarker, getDotMarker } from './utils';
 import { fetchDotListByLocation } from '../../utils/fetch';
 //获取应用实例
 const app = getApp();
+let authSetting = {}
 
 Page({
   data: {
@@ -54,11 +55,15 @@ Page({
     return new Promise((resolve, reject) => {
       wx.getSetting({
         success: (res) => {
+          authSetting = res.authSetting;
           if (!res.authSetting['scope.userLocation']) {
             wx.authorize({
               scope: 'scope.userLocation',
               success: () => {
                 resolve();
+              },
+              fail: () => {
+                this.toSetting(resolve);
               }
             })
           } else {
@@ -67,6 +72,24 @@ Page({
         },
         fail: () => {
           reject();
+        }
+      })
+    })
+  },
+  toSetting(preResolve) {
+    return new Promise((resolve, reject) => {
+      wx.showModal({
+        content: '您未对地理位置进行授权，无法获取附近网点，点击确定去设置',
+        success: () => {
+          wx.openSetting({
+            success: (res) => {
+              if (res.authSetting['scope.userLocation']) {
+                preResolve();
+              } else {
+                reject(preResolve);
+              }
+            }
+          })
         }
       })
     })
@@ -85,13 +108,14 @@ Page({
     })
   },
   onScanTap() {
+    if (!authSetting[''])
     wx.scanCode({
       onlyFromCamera: true,
       scanType: ['qrCode'],
       success(res) {
         console.log(res);
         wx.navigateTo({
-          url:'/pages/apply/apply'
+          url:'/pages/pay/pay'
         })
       }
     })

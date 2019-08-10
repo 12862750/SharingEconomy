@@ -1,11 +1,9 @@
-import { API } from './const';
-
-const BASE_API = 'https://api.graphenec.cn/wechat/api/web_api'
+import { API, FETCH_CONFIG } from './const';
 
 function fetch(url, data = {}, options = {}) {
   return new Promise((resolve, reject) => {
     wx.request({
-      url,
+      url: `${FETCH_CONFIG.BASE_API}${url}`,
       data,
       ...options,
       success(res) {
@@ -22,6 +20,17 @@ function fetch(url, data = {}, options = {}) {
   })
 }
 
+export const toLogin = (wechatCode) => {
+  return fetch(
+    API.LOGIN,
+    {
+      wechatCode,
+    }, {
+      method: 'POST'
+    }
+  )
+}
+
 /**
  * 根据经纬度获取附近网点
  * @params latitude: 纬度
@@ -30,7 +39,7 @@ function fetch(url, data = {}, options = {}) {
  */
 export const fetchDotListByLocation = (latitude, longitude) => {
   return fetch(
-    `${BASE_API}${API.GET_DOT_LIST_BY_LOCATION}`,
+    API.GET_DOT_LIST_BY_LOCATION,
     {
       latitude,
       longitude
@@ -47,14 +56,29 @@ export const fetchDotListByLocation = (latitude, longitude) => {
  * 获取用户数据
  */
 export const fetchUserInfo = () => {
-  return fetch(`${BASE_API}${API.GET_USER_INFO}`);
+  console.log('FETCH_CONFIG.TOKEN', FETCH_CONFIG.TOKEN);
+  return fetch(API.GET_USER_INFO, { token: FETCH_CONFIG.TOKEN }, {
+    method: 'POST',
+    header: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  });
 };
 
 /**
  * 获取用户余额
  */
 export const fetchUserBalance = () => {
-  return fetch(`${BASE_API}${API.GET_BALANCE}`);
+  return fetch(
+    API.GET_BALANCE,
+    {
+      token: FETCH_CONFIG.TOKEN
+    }, {
+      method: 'POST',
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    });
 };
 
 /**
@@ -63,7 +87,14 @@ export const fetchUserBalance = () => {
 
 export const fetchDeviceInfo = (deviceName) => {
   return fetch(
-    `${BASE_API}${API.GET_DEVICE_INFO}`,
-    { deviceName }
-    )
+    API.GET_DEVICE_INFO,
+    {
+      deviceName,
+      token: FETCH_CONFIG.TOKEN
+    }, {
+      method: 'POST',
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    })
 };
