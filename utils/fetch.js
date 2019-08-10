@@ -23,11 +23,8 @@ function fetch(url, data = {}, options = {}) {
 export const toLogin = (wechatCode) => {
   return fetch(
     API.LOGIN,
-    {
-      wechatCode,
-    }, {
-      method: 'POST'
-    }
+    { wechatCode },
+    { method: 'POST' }
   )
 }
 
@@ -40,10 +37,8 @@ export const toLogin = (wechatCode) => {
 export const fetchDotListByLocation = (latitude, longitude) => {
   return fetch(
     API.GET_DOT_LIST_BY_LOCATION,
-    {
-      latitude,
-      longitude
-    })
+    { latitude, longitude }
+  )
     .then((res) => {
       return res.result;
     })
@@ -56,13 +51,11 @@ export const fetchDotListByLocation = (latitude, longitude) => {
  * 获取用户数据
  */
 export const fetchUserInfo = () => {
-  console.log('FETCH_CONFIG.TOKEN', FETCH_CONFIG.TOKEN);
-  return fetch(API.GET_USER_INFO, { token: FETCH_CONFIG.TOKEN }, {
-    method: 'POST',
-    header: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }
-  });
+  return fetch(
+    API.GET_USER_INFO,
+    { token: FETCH_CONFIG.TOKEN },
+    { method: 'POST' }
+  );
 };
 
 /**
@@ -71,14 +64,9 @@ export const fetchUserInfo = () => {
 export const fetchUserBalance = () => {
   return fetch(
     API.GET_BALANCE,
-    {
-      token: FETCH_CONFIG.TOKEN
-    }, {
-      method: 'POST',
-      header: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    });
+    { token: FETCH_CONFIG.TOKEN },
+    { method: 'POST' }
+  );
 };
 
 /**
@@ -87,14 +75,8 @@ export const fetchUserBalance = () => {
 
 export const fetchDeviceInfo = (deviceName) => {
   return fetch(
-    API.GET_DEVICE_INFO,
-    {
-      deviceName,
-      token: FETCH_CONFIG.TOKEN
-    }, {
-      method: 'POST',
-      header: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    })
+    `${API.GET_DEVICE_INFO}?deviceName=${deviceName}`,
+    { token: FETCH_CONFIG.TOKEN },
+    { method: 'POST' }
+  );
 };

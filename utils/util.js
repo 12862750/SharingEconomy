@@ -12,7 +12,6 @@ export const checkSession = () => {
             const { code } = res;
             try {
               resolve(code);
-              wx.setStorageSync('wxCode', code);
             } catch (e) {
               reject(e);
             }

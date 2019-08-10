@@ -17,6 +17,7 @@
       markers="{{markers}}"
       bindmarkertap="onMarkerTap"
       bindtap="onMapTap"
+      bindregionchange="onMapMove"
     >
       <cover-view class="scan-btn" wx:if="{{!isFocus}}">
         <cover-image class="scan-bg" src="../../images/scan_btn.png" />

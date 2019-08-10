@@ -161,6 +161,30 @@ Page({
       })
     });
   },
+  onMapMove(e) {
+    const { type, causedBy } = e;
+    if (type === 'end' && causedBy === 'drag') {
+      this.mapContext.getCenterLocation({
+        success: ({ latitude, longitude }) => {
+          fetchDotListByLocation(latitude, longitude)
+            .then(({ pois }) => {
+              const locationMarker = this.data.markers[0];
+              const markers = [
+                locationMarker,
+                ...pois.map((item, index) => {
+                  const [longi, lati] = item.location.split(',');
+                  return getDotMarker(lati, longi, index + 1, item);
+                }),
+              ];
+
+              this.setData({
+                markers,
+              });
+            })
+        }
+      })
+    }
+  },
   onPhoneTap(e) {
     const { phone } = e.currentTarget.dataset;
     wx.makePhoneCall({

@@ -8,15 +8,19 @@ App({
     this.globalData.systemInfo = wx.getSystemInfoSync();
     this.globalData.isIPX = this.isIPX(this.globalData.systemInfo.model);
 
-    const wxCode = wx.getStorageSync('wxCode');
+    const token = wx.getStorageSync('token');
 
     checkSession()
       .then((code) => {
-        this.globalData.wxCode = code ? code : wxCode;
+        return code ? toLogin(code) : Promise.resolve({});
       })
-      .then(() => {
-        FETCH_CONFIG.TOKEN = this.globalData.wxCode;
-        return toLogin(this.globalData.wxCode);
+      .then(({ result }) => {
+        if (result) {
+          FETCH_CONFIG.TOKEN = result.token;
+          wx.setStorageSync('token', result.token);
+        } else {
+          FETCH_CONFIG.TOKEN = token;
+        }
       });
   },
   isIPX(model) {
