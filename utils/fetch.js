@@ -4,6 +4,7 @@ function fetch(url, data = {}, options = {}) {
   return new Promise((resolve, reject) => {
     wx.request({
       url: `${FETCH_CONFIG.BASE_API}${url}`,
+      header: { 'HTTP-ACCESS-TOKEN': FETCH_CONFIG.TOKEN},
       data,
       ...options,
       success(res) {
@@ -53,7 +54,6 @@ export const fetchDotListByLocation = (latitude, longitude) => {
 export const fetchUserInfo = () => {
   return fetch(
     API.GET_USER_INFO,
-    { token: FETCH_CONFIG.TOKEN },
     { method: 'POST' }
   );
 };
@@ -64,7 +64,6 @@ export const fetchUserInfo = () => {
 export const fetchUserBalance = () => {
   return fetch(
     API.GET_BALANCE,
-    { token: FETCH_CONFIG.TOKEN },
     { method: 'POST' }
   );
 };
@@ -76,7 +75,6 @@ export const fetchUserBalance = () => {
 export const fetchDeviceInfo = (deviceName) => {
   return fetch(
     `${API.GET_DEVICE_INFO}?deviceName=${deviceName}`,
-    { token: FETCH_CONFIG.TOKEN },
     { method: 'POST' }
   );
 };
