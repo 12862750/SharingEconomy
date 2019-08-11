@@ -27,8 +27,12 @@ function fetchWithToken(url, data = {}, options = {}) {
   return fetch(url, data, options);
 }
 
+/**
+ * 根据wechatCode到后台登录
+ * @params wechatCode
+ * @return result: 包含token和uid的登录信息
+ */
 export const toLogin = (wechatCode) => {
-  console.log(wechatCode);
   return fetch(
     API.LOGIN,
     { wechatCode },
@@ -55,6 +59,11 @@ export const fetchDotListByLocation = (latitude, longitude) => {
     });
 };
 
+/**
+ * 根据关键词获取网点
+ * @params words: 关键词
+ * @return result: 附近网点
+ */
 export const fetchDotListByWords = (words) => {
   return fetch(
     API.GET_DOT_LIST_BY_WORDS,
@@ -89,7 +98,6 @@ export const fetchUserBalance = () => {
 /**
  * 获取设备信息
  */
-
 export const fetchDeviceInfo = (deviceName) => {
   return fetchWithToken(
     API.GET_DEVICE_INFO,
@@ -97,6 +105,9 @@ export const fetchDeviceInfo = (deviceName) => {
   );
 };
 
+/**
+ * 开启设备
+ */
 export const payToStart = (data) => {
   return fetchWithToken(
     API.PAY_TO_START,
