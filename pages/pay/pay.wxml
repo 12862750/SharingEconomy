@@ -2,8 +2,8 @@
   <view class="container{{isIPX ?  ' ipx' : ''}}">
     <view class="content">
       <view class="top-card">
-        <view><label>网点名称:</label>网点1</view>
-        <view><label>设备s/n:</label>123123123123</view>
+        <view><label>网点名称:</label>{{deviceInfo.shopName}}</view>
+        <view><label>设备s/n:</label>{{deviceInfo.shopId}}</view>
       </view>
       <view class="cost"><label>时间费用:</label>{{tool.toFixed(deviceInfo.appKey)}}/{{deviceInfo.operatorName}}分钟</view>
       <view class="pay-type">

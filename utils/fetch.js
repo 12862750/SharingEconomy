@@ -28,6 +28,7 @@ function fetchWithToken(url, data = {}, options = {}) {
 }
 
 export const toLogin = (wechatCode) => {
+  console.log(wechatCode);
   return fetch(
     API.LOGIN,
     { wechatCode },
@@ -44,7 +45,7 @@ export const toLogin = (wechatCode) => {
 export const fetchDotListByLocation = (latitude, longitude) => {
   return fetch(
     API.GET_DOT_LIST_BY_LOCATION,
-    { latitude, longitude }
+    { latitude, longitude },
   )
     .then((res) => {
       return res.result;

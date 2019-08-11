@@ -11,7 +11,7 @@ App({
     const token = wx.getStorageSync('token');
     FETCH_CONFIG.TOKEN = token;
 
-    checkSession()
+    checkSession(token)
       .then((code) => {
         return code ? toLogin(code) : Promise.resolve({});
       })
