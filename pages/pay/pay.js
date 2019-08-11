@@ -43,8 +43,8 @@ Page({
     wx.showLoading({
       title: '信息加载中...',
     })
-    Promise.all([fetchUserInfo(), fetchUserBalance(), fetchDeviceInfo('A00006')])
-      .then(([userInfo, { result: userBalance}, { result: deviceInfo }]) => {
+    Promise.all([fetchUserBalance(), fetchDeviceInfo('A00006')])
+      .then(([{ result: userBalance}, { result: deviceInfo }]) => {
         console.log('userInfo:', userInfo);
         wx.hideLoading();
         this.setData({
