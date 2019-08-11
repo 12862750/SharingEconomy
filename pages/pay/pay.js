@@ -1,5 +1,17 @@
 // pages/pay/pay.js
-import { fetchUserInfo, fetchUserBalance, fetchDeviceInfo } from '../../utils/fetch';
+import {
+  fetchUserInfo,
+  fetchUserBalance,
+  fetchDeviceInfo,
+  payToStart,
+} from '../../utils/fetch';
+import { PAY_TYPE } from '../../utils/const';
+
+import {
+  getWechatPayData,
+  getVirtualCurrencyData,
+  getCardPayData,
+} from './util'
 
 const app = getApp();
 
@@ -10,21 +22,15 @@ Page({
    */
   data: {
     isIPX: app.globalData.isIPX,
-    payType: '1',
-    payTypeList: [{
-      id: 'pay1',
-      value: '1',
-      name: '光波卡',
-    }, {
-      id: 'pay2',
-      value: '2',
-      name: '能量贝抵扣',
-    }, {
-      id: 'pay3',
-      value: '3',
-      name: '单次体验',
-    }],
-    deviceInfo: {}
+    payType: '2',
+    payTypeList: [
+      PAY_TYPE.CARD_PAY, 
+      PAY_TYPE.VIRTUAL_CURRENCY, 
+      PAY_TYPE.WECHAT_PAY,
+    ],
+    deviceInfo: {},
+    userBalance: 0,
+    cardNum: '',
   },
 
   /**
@@ -37,8 +43,9 @@ Page({
     wx.showLoading({
       title: '信息加载中...',
     })
-    Promise.all([fetchUserBalance(), fetchDeviceInfo('A00006')])
-      .then(([{ result: userBalance}, { result: deviceInfo }]) => {
+    Promise.all([fetchUserInfo(), fetchUserBalance(), fetchDeviceInfo('A00006')])
+      .then(([userInfo, { result: userBalance}, { result: deviceInfo }]) => {
+        console.log('userInfo:', userInfo);
         wx.hideLoading();
         this.setData({
           deviceInfo,
@@ -52,8 +59,14 @@ Page({
       payType: value,
     });
   },
+  onInput(e) {
+    const { value } = e.detail;
+
+    this.setData({
+      cardNum: value,
+    });
+  },
   onScanTap() {
-    console.log('扫描光波卡');
     wx.scanCode({
       onlyFromCamera: true,
       scanType: ['qrCode'],
@@ -63,6 +76,38 @@ Page({
     })
   },
   onStartTap() {
-    console.log('开启设备！！！')
+    const {
+      payType,
+      deviceInfo,
+      userBalance,
+      cardNum,
+    } = this.data;
+    let params = null;
+
+    switch (payType) {
+      case PAY_TYPE.WECHAT_PAY.value:
+        params = getWechatPayData(deviceInfo.deviceId);
+        break;
+      case PAY_TYPE.VIRTUAL_CURRENCY.value:
+        params = getVirtualCurrencyData(Number(userBalance), deviceInfo.deviceId);
+        break;
+      case PAY_TYPE.CARD_PAY.value:
+        params = getCardPayData(cardNum, deviceInfo.deviceId);
+        break;
+    }
+
+    if (params) {
+      payToStart(params)
+        .then((result) => {
+          console.log('pay result:', result);
+        })
+        .catch((err) => {
+          wx.showToast({
+            title: err.errorMsg,
+            mask: true,
+            icon: 'none',
+          });
+        })
+    }
   }
 })

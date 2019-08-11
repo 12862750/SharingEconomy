@@ -96,3 +96,11 @@ export const fetchDeviceInfo = (deviceName) => {
     { deviceName }
   );
 };
+
+export const payToStart = (data) => {
+  return fetchWithToken(
+    API.PAY_TO_START,
+    data,
+    { method: 'POST' }
+  )
+}
