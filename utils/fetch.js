@@ -4,7 +4,6 @@ function fetch(url, data = {}, options = {}) {
   return new Promise((resolve, reject) => {
     wx.request({
       url: `${FETCH_CONFIG.BASE_API}${url}`,
-      header: { 'HTTP-ACCESS-TOKEN': FETCH_CONFIG.TOKEN},
       data,
       ...options,
       success(res) {
@@ -19,6 +18,13 @@ function fetch(url, data = {}, options = {}) {
       }
     })
   })
+}
+
+function fetchWithToken(url, data = {}, options = {}) {
+  Object.assign(options, {
+    header: { 'HTTP-ACCESS-TOKEN': FETCH_CONFIG.TOKEN }
+  });
+  return fetch(url, data, options);
 }
 
 export const toLogin = (wechatCode) => {
@@ -48,13 +54,25 @@ export const fetchDotListByLocation = (latitude, longitude) => {
     });
 };
 
+export const fetchDotListByWords = (words) => {
+  return fetch(
+    API.GET_DOT_LIST_BY_WORDS,
+    { searchText: words }
+  )
+    .then((res) => {
+      return res.result;
+    })
+    .catch((err) => {
+      return Promise.reject(err);
+    });
+}
+
 /**
  * 获取用户数据
  */
 export const fetchUserInfo = () => {
-  return fetch(
+  return fetchWithToken(
     API.GET_USER_INFO,
-    { method: 'POST' }
   );
 };
 
@@ -62,9 +80,8 @@ export const fetchUserInfo = () => {
  * 获取用户余额
  */
 export const fetchUserBalance = () => {
-  return fetch(
-    API.GET_BALANCE,
-    { method: 'POST' }
+  return fetchWithToken(
+    API.GET_BALANCE
   );
 };
 
@@ -73,8 +90,8 @@ export const fetchUserBalance = () => {
  */
 
 export const fetchDeviceInfo = (deviceName) => {
-  return fetch(
-    `${API.GET_DEVICE_INFO}?deviceName=${deviceName}`,
-    { method: 'POST' }
+  return fetchWithToken(
+    API.GET_DEVICE_INFO,
+    { deviceName }
   );
 };

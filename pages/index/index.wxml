@@ -6,7 +6,7 @@
     </view>
     <view class="search">
       <image class="icon" mode="cover" src="/images/search.png" />
-      <input placeholder="搜索附近的网点" bindfocus="onSearchFocus" bindblur="onSearchBlur" />
+      <input placeholder="搜索附近的网点" bindinput="onSearch" bindfocus="onSearchFocus" bindblur="onSearchBlur" />
     </view>
   </view>
   <view class="map-wrap">

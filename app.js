@@ -9,6 +9,7 @@ App({
     this.globalData.isIPX = this.isIPX(this.globalData.systemInfo.model);
 
     const token = wx.getStorageSync('token');
+    FETCH_CONFIG.TOKEN = token;
 
     checkSession()
       .then((code) => {
@@ -18,8 +19,6 @@ App({
         if (result) {
           FETCH_CONFIG.TOKEN = result.token;
           wx.setStorageSync('token', result.token);
-        } else {
-          FETCH_CONFIG.TOKEN = token;
         }
       });
   },

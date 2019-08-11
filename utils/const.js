@@ -6,8 +6,10 @@ export const FETCH_CONFIG = {
 export const API = {
   // 登录
   LOGIN: '/session/wetchatLogin',
-  // 获取附近网点
+  // 根据经纬度获取附近网点
   GET_DOT_LIST_BY_LOCATION: '/location/nearBy',
+  // 根据关键词获取网点
+  GET_DOT_LIST_BY_WORDS: '/home/shops',
   // 获取用户信息
   GET_USER_INFO: '/landing/mine/auth',
   // 获取用户余额

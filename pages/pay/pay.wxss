@@ -60,11 +60,13 @@
   position: relative;
   font-size: 28rpx;
   color: #121212;
+  border-radius: 10rpx;
 }
 
 .pay-type .pay-type-list .pay-type-item .type-text {
   display: block;
   padding: 24rpx 28rpx 24rpx 84rpx;
+  position: relative;
 }
 
 .pay-type .pay-type-list .pay-type-item .radio-icon {
@@ -76,6 +78,22 @@
   margin-top: -15rpx;
 }
 
+.pay-type .pay-type-list .pay-type-item .card-num {
+  padding: 20rpx 84rpx;
+  position: relative;
+  border-top: 1px solid #fff;
+}
+
+.pay-type .pay-type-list .pay-type-item .card-num image {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 28rpx;
+  margin: auto;
+  width: 39rpx;
+  height: 39rpx;
+}
+
 .pay-type .pay-type-list .pay-type-item .addon {
   position: absolute;
   top: 0;
@@ -84,11 +102,6 @@
   margin: auto;
   display: flex;
   align-items: center;
-}
-
-.pay-type .pay-type-list .pay-type-item .addon image {
-  width: 39rpx;
-  height: 39rpx;
 }
 
 .pay-type .pay-type-list .pay-type-item .addon text {

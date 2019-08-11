@@ -1,6 +1,6 @@
 //index.js
 import { getLocationMarker, getDotMarker } from './utils';
-import { fetchDotListByLocation } from '../../utils/fetch';
+import { fetchDotListByLocation, fetchDotListByWords } from '../../utils/fetch';
 //获取应用实例
 const app = getApp();
 let authSetting = {}
@@ -123,10 +123,22 @@ Page({
   onLocalTap() {
     this.getLocation()
       .then(({ latitude, longitude }) => {
-        this.setData({
-          latitude,
-          longitude,
-        })
+        fetchDotListByLocation(latitude, longitude)
+          .then(({ pois }) => {
+            const markers = [
+              getLocationMarker(latitude, longitude),
+              ...pois.map((item, index) => {
+                const [longi, lati] = item.location.split(',');
+                return getDotMarker(lati, longi, index + 1, item);
+              }),
+            ];
+
+            this.setData({
+              markers,
+              latitude,
+              longitude,
+            });
+          })
       })
   },
   onMapTap() {
@@ -135,6 +147,9 @@ Page({
     });
   },
   onMarkerTap({ markerId }) {
+    if (markerId === 0) {
+      return;
+    }
     const curDot = this.data.markers[markerId];
     this.setData({
       isFocus: true,
@@ -148,12 +163,14 @@ Page({
         } else if (index === markerId) {
           return {
             ...item,
+            zIndex: 10,
             width: '68rpx',
             height: '76rpx',
           }
         } else {
           return {
             ...item,
+            zIndex: 0,
             width: '51rpx',
             height: '57rpx',
           }
@@ -190,6 +207,23 @@ Page({
     wx.makePhoneCall({
       phoneNumber: phone,
     })
+  },
+  onSearch(e) {
+    const { value: words } = e.detail;
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
+
+    this.timer = setTimeout(() => {
+      console.log('搜索，关键词：', words);
+      fetchDotListByWords(words)
+        .then(res => {
+          console.log(res);
+        })
+      clearTimeout(this.timer);
+      this.timer = null;
+    }, 1000);
   },
   onSearchFocus() {
     this.setData({

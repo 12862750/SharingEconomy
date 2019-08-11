@@ -23,33 +23,30 @@ Page({
       id: 'pay3',
       value: '3',
       name: '单次体验',
-    }]
+    }],
+    deviceInfo: {}
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    fetchUserInfo()
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log('err', err);
-      })
-    fetchUserBalance()
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log('err', err);
-      })
-    fetchDeviceInfo('A00006')
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log('err', err);
+    this.pageInit();
+  },
+  pageInit() {
+    wx.showLoading({
+      title: '信息加载中...',
+    })
+    Promise.all([fetchUserInfo(), fetchUserBalance(), fetchDeviceInfo('A00006')])
+      .then(([userInfo, { result: userBalance}, { result: deviceInfo }]) => {
+        console.log('userInfo', userInfo);
+        console.log('userBalance', userBalance);
+        console.log('deviceInfo', deviceInfo);
+        wx.hideLoading();
+        this.setData({
+          deviceInfo,
+          userBalance,
+        })
       })
   },
   onPayTypeChange(e) {
@@ -59,6 +56,7 @@ Page({
     });
   },
   onScanTap() {
+    console.log('扫描光波卡');
     wx.scanCode({
       onlyFromCamera: true,
       scanType: ['qrCode'],
