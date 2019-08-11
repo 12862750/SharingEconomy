@@ -1,12 +1,12 @@
 import { API, FETCH_CONFIG } from './const';
 
-function fetch(url, data = {}, options = {}) {
+function fetch(url, method, options = {}) {
   return new Promise((resolve, reject) => {
     wx.request({
       url: `${FETCH_CONFIG.BASE_API}${url}`,
       header: { 'HTTP-ACCESS-TOKEN': FETCH_CONFIG.TOKEN},
-      data,
-      ...options,
+      method: method,
+      data: options,
       success(res) {
         if (res.data.status === 'success') {
           resolve(res.data);
@@ -24,8 +24,8 @@ function fetch(url, data = {}, options = {}) {
 export const toLogin = (wechatCode) => {
   return fetch(
     API.LOGIN,
-    { wechatCode },
-    { method: 'POST' }
+    'POST',
+    { wechatCode }
   )
 }
 
@@ -38,7 +38,8 @@ export const toLogin = (wechatCode) => {
 export const fetchDotListByLocation = (latitude, longitude) => {
   return fetch(
     API.GET_DOT_LIST_BY_LOCATION,
-    { latitude, longitude }
+    'GET',
+    { latitude, longitude },
   )
     .then((res) => {
       return res.result;
@@ -54,7 +55,7 @@ export const fetchDotListByLocation = (latitude, longitude) => {
 export const fetchUserInfo = () => {
   return fetch(
     API.GET_USER_INFO,
-    { method: 'POST' }
+    'GET'
   );
 };
 
@@ -64,7 +65,7 @@ export const fetchUserInfo = () => {
 export const fetchUserBalance = () => {
   return fetch(
     API.GET_BALANCE,
-    { method: 'POST' }
+    'GET'
   );
 };
 
@@ -75,6 +76,6 @@ export const fetchUserBalance = () => {
 export const fetchDeviceInfo = (deviceName) => {
   return fetch(
     `${API.GET_DEVICE_INFO}?deviceName=${deviceName}`,
-    { method: 'POST' }
+    'GET'
   );
 };
