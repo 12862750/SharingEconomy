@@ -13,6 +13,9 @@ import {
   getCardPayData,
 } from './util'
 
+import bluetooth from '../../utils/bluetooth.js';
+var TimerCheck;
+
 const app = getApp();
 
 Page({
@@ -31,6 +34,7 @@ Page({
     deviceInfo: {},
     userBalance: 0,
     cardNum: '',
+    connStatus: '连接中...',
   },
 
   /**
@@ -115,5 +119,36 @@ Page({
           });
         })
     }
-  }
+  },
+  onShow() {
+    bluetooth.OpenPrint(); //打开蓝牙
+    timer(this);
+  },
+  onHide: function () {
+    clearInterval(TimerCheck);
+    bluetooth.ClosePirint(); //关闭蓝牙
+  },
+
+  //发送指令
+  printText() {
+    pos.PrintText('aa');
+  },
 })
+
+//定时器
+function timer(that) {
+  try {
+    if (bluetooth.GetCanPrint()) { //打印机是否就绪
+      that.setData({
+        connStatus: '连接成功'
+      });
+    } else {
+      that.setData({
+        motto: bluetooth.GetCurLog(), //状态日志
+      });
+    }
+  } catch (err) { }
+  TimerCheck = setTimeout(function () {
+    timer(that);
+  }, 9000);
+}
