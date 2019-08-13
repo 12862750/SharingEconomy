@@ -45,11 +45,17 @@ Page({
     })
     Promise.all([fetchUserBalance(), fetchDeviceInfo('A00006')])
       .then(([{ result: userBalance}, { result: deviceInfo }]) => {
-        console.log('userInfo:', userInfo);
         wx.hideLoading();
         this.setData({
           deviceInfo,
           userBalance,
+        })
+      })
+      .catch(() => {
+        wx.hideLoading();
+        wx.showToast({
+          icon: 'none',
+          title: '发生未知错误，请重试！',
         })
       })
   },
