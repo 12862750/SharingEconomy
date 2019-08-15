@@ -10,8 +10,8 @@ var M8 = '4616';
 var hFfIwp$ci9 = '';
 var V10 = '';
 var Os11 = '';
-var hqMRz12 = '';
-var lPGjy13 = '';
+var hqMRz12 = '';//可写的特征值
+var lPGjy13 = '';//可读的特征值
 var dYUsKnVfW17 = false;
 var gwIuedY18 = false;
 var Ur19 = false;
@@ -19,30 +19,32 @@ var jNjOIIw20 = false;
 var WFnpAhi21 = 0;
 var $UvlvHLvp22 = -1;
 var pvV23 = '';
+var deviceMAC = '';
 var Z24;
 var XweU25;
 module["exports"] = {
   GetCurLog: GetCurLog,
   GetResLast: GetResLast,
-  OpenPrint: OpenPrint,
-  ClosePirint: ClosePirint,
+  OpenBluetooth: OpenBluetooth,
+  CloseBluetooth: CloseBluetooth,
   GetAvailable: GetAvailable,
   GetConnected: GetConnected,
-  GetCanPrint: GetCanPrint,
+  GetCanBluetooth: GetCanBluetooth,
 };
 
-function OpenPrint() {
+function OpenBluetooth(deviceId) {
   pvV23 = '开始初始化蓝牙';
-  //StartInterval()
+  deviceMAC = deviceId
+  StartInterval()
 }
 
-function ClosePirint() {
+function CloseBluetooth() {
   StopInterval();
   pos_ClearQueue();
   CloseBluetooth()
 }
 
-function GetCanPrint() {
+function GetCanBluetooth() {
   if ($UvlvHLvp22 == 0) return true;
   else return false
 }
@@ -107,7 +109,7 @@ function WriteQueue() {
       } else {
         XKFsrQG5 = 10000
       }
-      console["log"]("printerDeviceId:" + V10);
+      console["log"]("DeviceId:" + V10);
       if (V10) {
         createBLEConnection(V10)
       } else {
@@ -137,7 +139,7 @@ function WriteOneQueue() {
       // 分包发送
       var nI27 = 20;
       var c_heIVqQ28 = pos_Mathceil($npECOS26["length"], nI27);
-      console["log"]("count:" + c_heIVqQ28);
+      console["log"]("WriteQueue count:" + c_heIVqQ28);
       for (var sPzPNWJkN29 = 0; sPzPNWJkN29 < c_heIVqQ28; sPzPNWJkN29++) {
         var VsC30 = sPzPNWJkN29 * nI27;
         var abjG31 = VsC30 + nI27;
@@ -148,7 +150,7 @@ function WriteOneQueue() {
           abjG31 = $npECOS26["length"]
         }
         var ECcZKZM32 = pos_BufferSlice($npECOS26, VsC30, abjG31);
-        console["log"]("tempBf:" + ECcZKZM32);
+        console["log"]("WriteQueue write tempBf:" + ECcZKZM32);
         write(ECcZKZM32)
       }
     }
@@ -437,11 +439,18 @@ function getBLEDeviceServices(_deviceId) {
   xcx_getBLEDeviceServices(_deviceId)
 }
 
-function getBLEDeviceCharacteristicsSuccess(EtcE61) {
+function getBLEDeviceWriteCharacteristicsSuccess(EtcE61) {
   WFnpAhi21 = 7000;
-  console["log"]('特征码:' + EtcE61);
-  lPGjy13 = EtcE61
+  console["log"]('写特征码:' + EtcE61);
   hqMRz12 = EtcE61;
+  $UvlvHLvp22 = 0
+}
+
+
+function getBLEDeviceReadCharacteristicsSuccess( EtcE61) {
+  WFnpAhi21 = 7000;
+  console["log"]('读特征码:' + EtcE61);
+  lPGjy13 = EtcE61
   $UvlvHLvp22 = 0
 }
 
@@ -499,8 +508,8 @@ function write($75) {
     return "available is false"
   }
   if (!V10) {
-    console["log"]("printerDeviceId is null");
-    return "printerDeviceId is null"
+    console["log"]("DeviceId is null");
+    return "DeviceId is null"
   }
   if (!Ur19) {
     console["log"]("connected is false");
@@ -600,6 +609,9 @@ function xcx_getBluetoothDevices() {
       console.log(res);
       for (var p in res.devices) {
         console.log('for devices:' + res.devices[p].name);
+        if (res.devices[p].deviceId != deviceMAC){
+          continue;
+        }
         if (res.devices[p].name.search("未知设备") != -1) {
           continue;
         } else {
@@ -719,12 +731,17 @@ function xcx_getBLEDeviceServices(_deviceId) {
 }
 
 function xcx_getBLEDeviceCharacteristics(_deviceId, _serviceId) {
+  // 读特征码
   wx.getBLEDeviceCharacteristics({
     deviceId: _deviceId,
     serviceId: _serviceId,
     success: function (res) {
       for (var p in res.characteristics) {
-        getBLEDeviceCharacteristicsSuccess(res.characteristics[p].uuid)
+        if (res.characteristics[p].properties.read) {
+          getBLEDeviceReadCharacteristicsSuccess(res.characteristics[p].uuid)
+        } else if (res.characteristics[p].properties.write) {
+          getBLEDeviceWriteCharacteristicsSuccess(res.characteristics[p].uuid)
+        }
       }
     },
     fail: function (res) {
@@ -734,6 +751,7 @@ function xcx_getBLEDeviceCharacteristics(_deviceId, _serviceId) {
       console.log('getBLEDeviceCharacteristics  complete')
     }
   })
+
 }
 
 function xcx_readBLECharacteristicValue(_deviceId, _serviceId, _characteristicId) {

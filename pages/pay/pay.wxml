@@ -3,7 +3,7 @@
     <view class="content">
       <view class="top-card">
         <view><label>网点名称:</label>{{deviceInfo.shopName}}</view>
-        <view bindtap="printText"><label>设备s/n:</label>{{deviceInfo.deviceNumber}}【{{connStatus}}】</view>
+        <view bindtap="bindPrintText"><label>设备s/n:</label>{{deviceInfo.deviceNumber}}【{{connStatus}}】</view>
       </view>
       <view class="cost"><label>时间费用:</label>{{tool.toFixed(deviceInfo.appKey)}}/{{deviceInfo.operatorName}}分钟</view>
       <view class="pay-type">

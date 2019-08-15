@@ -14,6 +14,7 @@ import {
 } from './util'
 
 import bluetooth from '../../utils/bluetooth.js';
+import pos from '../../utils/bluetoothpos.js';
 var TimerCheck;
 
 const app = getApp();
@@ -50,6 +51,7 @@ Page({
     Promise.all([fetchUserBalance(), fetchDeviceInfo('A00006')])
       .then(([{ result: userBalance}, { result: deviceInfo }]) => {
         wx.hideLoading();
+        bluetooth.OpenBluetooth(deviceInfo.deviceBrand); //打开蓝牙
         this.setData({
           deviceInfo,
           userBalance,
@@ -120,25 +122,29 @@ Page({
         })
     }
   },
-  onShow() {
-    bluetooth.OpenPrint(); //打开蓝牙
+  onShow: function() {
     timer(this);
   },
   onHide: function () {
     clearInterval(TimerCheck);
-    bluetooth.ClosePirint(); //关闭蓝牙
+    bluetooth.CloseBluetooth(); //关闭蓝牙
+  },
+  bindPrintText: function () {
+    printText();
   },
 
-  //发送指令
-  printText() {
-    pos.PrintText('aa');
-  },
 })
+
+//发送指令
+function printText() {
+  pos.PrintText('BB');
+}
+
 
 //定时器
 function timer(that) {
   try {
-    if (bluetooth.GetCanPrint()) { //打印机是否就绪
+    if (bluetooth.GetCanBluetooth()) { //是否就绪
       that.setData({
         connStatus: '连接成功'
       });
