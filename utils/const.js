@@ -1,5 +1,6 @@
 export const FETCH_CONFIG = {
   BASE_API: 'https://api.graphenec.cn/wechat/api/web_api',
+  //BASE_API: 'http://localhost:8080/web_api',
   TOKEN: '',
   UID: '',
 };

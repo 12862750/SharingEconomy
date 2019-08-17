@@ -1,5 +1,5 @@
 //index.js
-import { getLocationMarker, getDotMarker } from './utils';
+import { getQueryString,getLocationMarker, getDotMarker } from './utils';
 import { fetchDotListByLocation, fetchDotListByWords } from '../../utils/fetch';
 //获取应用实例
 const app = getApp();
@@ -109,14 +109,34 @@ Page({
   },
   onScanTap() {
     if (!authSetting[''])
-    wx.scanCode({
-      onlyFromCamera: true,
-      scanType: ['qrCode'],
-      success(res) {
-        console.log(res);
+      var that = this;
+      wx.scanCode({
+       success: (res) => {
+        const path = res.result
+        var deviceName = '0'
+        if (path.length > 20) {
+          let q = decodeURIComponent(path)
+          deviceName = getQueryString(q, 'id')
+        }
+
+        if (deviceName === '0' || deviceName === 'undefined' || deviceName === null) {
+          deviceName = path
+        }
+
+        //检查设备状态
         wx.navigateTo({
-          url:'/pages/pay/pay'
+          url: '/pages/pay/pay?id=' + deviceName
         })
+
+      },
+      fail: (res) => {
+        wx.showToast({
+          title: '扫描失败',
+          icon: 'success',
+          duration: 2000
+        })
+      },
+      complete: (res) => {
       }
     })
   },

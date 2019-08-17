@@ -3,10 +3,10 @@
     <view class="content">
       <view class="top-card">
         <view><label>网点名称:</label>{{deviceInfo.shopName}}</view>
-        <view bindtap="bindPrintText"><label>设备s/n:</label>{{deviceInfo.deviceNumber}}【{{connStatus}}】</view>
+        <view><label>设备s/n:</label>{{deviceInfo.deviceNumber}}【{{connStatus}}】</view>
       </view>
       <view class="cost"><label>时间费用:</label>{{tool.toFixed(deviceInfo.appKey)}}/{{deviceInfo.operatorName}}分钟</view>
-      <view class="pay-type">
+      <view class="pay-type" wx:if="{{connected}}">
         选择支付方式
         <radio-group class="pay-type-list" bindchange="onPayTypeChange">
           <view class="pay-type-item" wx:for="{{payTypeList}}" wx:key="{{item.id}}">
@@ -20,7 +20,7 @@
             </label>
             <block wx:if="{{item.value === '2' && payType === item.value}}">
               <view class="card-num">
-                <input bindinput="onInput" placeholder="请输入您的光波卡" />
+                <input bindinput="onInput" placeholder="请输入您的光波卡" value="{{cardNum}}"/>
                 <image src="/images/scan_green.png" mode="aspectFill" bindtap="onScanTap"></image>
               </view>
             </block>
@@ -29,8 +29,8 @@
             </view>
           </view>
         </radio-group>
+        <button class="start-btn" bindtap="bindPrintText">开启设备</button>
       </view>
-      <button class="start-btn" bindtap="onStartTap">开启设备</button>
     </view>
   </view>
 </full-page>
