@@ -52,7 +52,8 @@ Page({
     read_id: null,
     // 发送指令后返回结果
     writeReturn: false,
-    onOpenNotify: null
+    onOpenNotify: null,
+    stopSearch:false
   },
 
   /**
@@ -70,6 +71,11 @@ Page({
     this.setData({
       deviceNumber: deviceName
     })
+
+    //开始初始化
+    if (!this.data.connected) {
+      this.pageInit();
+    }
   },
 
   //查询设备信息成功，扫描连接设备
@@ -85,9 +91,7 @@ Page({
           wx.setStorageSync('token', result.token);
           wx.setStorageSync('uid', result.uid);
         }
-        if (!this.data.connected) {
-          this.pageInit();
-        }
+        
       });
   },
 
@@ -112,6 +116,7 @@ Page({
         })
       })
       .catch((res) => {
+        this.disconnect()
         wx.hideLoading();
         wx.showToast({
           icon: 'none',
@@ -204,7 +209,7 @@ Page({
                 confirmText: "知道了",
                 success: function (resss) {
                   if (resss.confirm) {
-                    wx.navigateTo({ url: '/pages/index/index' })
+                    //wx.navigateTo({ url: '/pages/index/index' })
                   }
                 }
               })
@@ -232,7 +237,7 @@ Page({
   
   //离开界面，断开连接
   onHide(){
-    //this.disconnect()
+    this.disconnect()
   },
   onUnload() {
     this.disconnect()
@@ -246,13 +251,20 @@ Page({
       return;
     }
     var _this = this;
+    //定时器
+    setTimeout(function () {
+      _this.setData({ stopSearch: true })
+      wx.closeBluetoothAdapter()
+      _this.stopSearch();
+    }, 10000);
+
     wx.openBluetoothAdapter({
       success: function (res) {
         console.log('--openBluetoothAdapter:', res)
       },
       complete(res) {
         wx.onBluetoothAdapterStateChange(function (res) {
-          if (res.available) {
+          if (res.available && !_this.data.stopSearch) {
             setTimeout(function () {
               _this.connect();
             }, 2000);
@@ -339,13 +351,6 @@ Page({
       success(res) {
         console.log('--createBLEConnection:', res)
         _this.getDeviceService();
-      },
-      fail(res) {
-        wx.showToast({
-          icon: 'none',
-          title: '无法连接蓝牙，请重试！',
-          timeout: 5000
-        })
       }
     })
   },
@@ -387,7 +392,6 @@ Page({
                   connected: true,
                   connStatus: '连接成功'
                 })
-                debugger
                 _this.openNotify();
               }
             },
@@ -537,7 +541,7 @@ Page({
   //过滤目标设备
   filterDevice(device) {
     var data = device[0].name;
-    if (data && this.data.deviceInfo.deviceBrand === data) {
+    if (data && this.data.deviceInfo && this.data.deviceInfo.deviceBrand === data) {
       var obj = { name: device[0].name, deviceId: device[0].deviceId }
       return obj
     }
@@ -546,7 +550,6 @@ Page({
   filterService(services) {
     let service_id = "";
     for (let i = 0; i < services.length; i++) {
-      debugger
       if (services[i].uuid.toUpperCase().indexOf(this.data.server_info) != -1) {
         service_id = services[i].uuid;
         break;
