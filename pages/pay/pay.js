@@ -398,11 +398,15 @@ Page({
                 _this.setData({
                   notify_id: notify_id,
                   write_id: write_id,
-                  read_id: read_id,
                   connected: true,
                   connStatus: '连接成功'
                 })
                 _this.openNotify();
+              }
+              if (read_id != null) {
+                _this.setData({
+                  read_id: read_id
+                })
               }
             },
             complete: function (res) {
