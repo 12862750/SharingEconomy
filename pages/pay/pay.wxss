@@ -1,10 +1,4 @@
 /* pages/apply/apply.wxss */
-.container {
-  height: 100%;
-  padding-top: 103rpx;
-  box-sizing: border-box;
-}
-
 .content {
   height: 100%;
   box-sizing: border-box;

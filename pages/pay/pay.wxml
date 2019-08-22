@@ -1,5 +1,5 @@
 <full-page title="支付">
-  <view class="container{{isIPX ?  ' ipx' : ''}}">
+  <view class="full-container{{isIPX ?  ' ipx' : ''}}">
     <view class="content">
       <view class="top-card">
         <view><label>网点名称:</label>{{deviceInfo.shopName}}</view>

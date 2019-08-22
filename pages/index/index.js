@@ -10,6 +10,7 @@ Page({
     isSearching: false,
     isFocus: false,
     isIPX: app.globalData.isIPX,
+    userInfo: null,
     markers: [],
     latitude: 23.099994,
     longitude: 113.324520,
@@ -51,11 +52,23 @@ Page({
         });
       })
   },
+  onShow() {
+    if (app.globalData.userInfo) {
+      this.setData({
+        userInfo: app.globalData.userInfo,
+      })
+    } else {
+      app.userInfoReadyCallback = (res) => {
+        this.setData({
+          userInfo: res.userInfo,
+        })
+      }
+    }
+  },
   getLocationPremission() {
     return new Promise((resolve, reject) => {
       wx.getSetting({
         success: (res) => {
-          authSetting = res.authSetting;
           if (!res.authSetting['scope.userLocation']) {
             wx.authorize({
               scope: 'scope.userLocation',
@@ -256,9 +269,8 @@ Page({
     });
   },
   goToPerson() {
-    // 暂时先不跳个人中心
-    // wx.navigateTo({
-    //   url:'/pages/personal/personal'
-    // })
+    wx.navigateTo({
+      url:'/pages/personal/personal'
+    })
   }
 })

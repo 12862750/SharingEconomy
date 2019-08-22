@@ -1,7 +1,8 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/pay/pay"
+    "pages/pay/pay",
+    "pages/personal/personal"
   ],
   "permission": {
     "scope.userLocation": {

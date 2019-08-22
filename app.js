@@ -25,6 +25,24 @@ App({
           wx.setStorageSync('uid', result.uid);
         }
       });
+
+    this.getUserInfo();
+  },
+  getUserInfo() {
+    wx.getSetting({
+      success: (res) => {
+        if (res.authSetting['scope.userInfo']) {
+          wx.getUserInfo({
+            success: (res) => {
+              this.globalData.userInfo = res.userInfo;
+              if (this.userInfoReadyCallback) {
+                this.userInfoReadyCallback(res)
+              }
+            }
+          })
+        }
+      }
+    })
   },
   isIPX(model) {
     return !!model.match(/iPhone\sX/g);
@@ -32,6 +50,6 @@ App({
   globalData: {
     isIPX: false,
     systemInfo: {},
-    wxCode: '',
+    userInfo: null,
   }
 })

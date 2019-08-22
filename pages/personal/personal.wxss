@@ -1,0 +1,86 @@
+.content {
+  height: 100%;
+  box-sizing: border-box;
+  background-color: #fff;
+  padding-top: 260rpx;
+  position: relative;
+}
+
+.user {
+  position: absolute;
+  top: -58rpx;
+  width: 100%;
+  text-align: center;
+}
+
+.user .no-login {
+  width: 170rpx;
+  height: 170rpx;
+  border-radius: 100%;
+  line-height: 170rpx;
+}
+
+.user .no-login::after {
+  display: none;
+}
+
+.user image {
+  width: 170rpx;
+  height: 170rpx;
+  border-radius: 100%;
+}
+
+.user view {
+  height: 60rpx;
+  line-height: 60rpx;
+}
+
+.operation {
+  display: flex;
+  padding: 30rpx 40rpx 30rpx 32rpx;
+  align-items: center;
+  text-align: left;
+  line-height: 38rpx;
+  border-radius: 0;
+  background-color: #fff;
+}
+
+.operation.button-hover {
+  background-color: #fbfbfb;
+}
+
+.operation::after {
+  display: none;
+}
+
+.operation .icon {
+  width: 34rpx;
+  display: flex;
+  align-items: center;
+}
+
+.operation .icon .order {
+  width: 28rpx;
+  height: 34rpx;
+}
+
+.operation .icon .about {
+  width: 33rpx;
+  height: 33rpx;
+}
+
+.operation .icon .join {
+  width: 34rpx;
+  height: 29rpx;
+}
+
+.operation .text {
+  flex: 1;
+  font-size: 28rpx;
+  padding-left: 30rpx;
+}
+
+.operation .arrow {
+  width: 18rpx;
+  height: 32rpx;
+}

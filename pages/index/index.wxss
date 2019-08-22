@@ -16,11 +16,15 @@
   height: 64rpx;
 }
 
+.top-bar .avatar .default,
 .top-bar .avatar image {
   width: 64rpx;
   height: 64rpx;
   border-radius: 100%;
-  background-color: white;
+}
+
+.top-bar .avatar .default {
+  background-color: #eee;
 }
 
 .top-bar .search {

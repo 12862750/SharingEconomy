@@ -1,9 +1,10 @@
 <!--index.wxml-->
 <view class="container{{isIPX ?  ' ipx' : ''}}">
   <view class="top-bar">
-    <!-- <view class="avatar" wx:if="{{!isSearching}}" bindtap="goToPerson">
-      <image mode="cover" src="/images/avatar.png" />
-    </view> -->
+    <view class="avatar" wx:if="{{!isSearching}}" bindtap="goToPerson">
+      <image mode="cover" wx:if="{{userInfo}}" src="{{userInfo.avatarUrl}}" />
+      <view class="default" wx:else></view>
+    </view>
     <view class="search">
       <image class="icon" mode="cover" src="/images/search.png" />
       <input placeholder="搜索附近的网点" bindinput="onSearch" bindfocus="onSearchFocus" bindblur="onSearchBlur" />

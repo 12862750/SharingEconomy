@@ -1,0 +1,24 @@
+<full-page title="个人中心">
+  <view class="full-container{{isIPX ?  ' ipx' : ''}}">
+    <view class="content">
+      <view class="user">
+        <button
+          class="no-login"
+          open-type="getUserInfo"
+          wx:if="{{!userInfo}}"
+          bindgetuserinfo="getUserInfo"
+        >未登录</button>
+        <block wx:else>
+          <image mode="cover" src="{{userInfo.avatarUrl}}" />
+          <view>{{userInfo.nickName}}</view>
+          <!-- <view>185****2222</view> -->
+        </block>
+      </view>
+      <button class="operation" wx:for="{{operationList}}" wx:key="{{item.icon}}">
+        <view class="icon"><image class="{{item.icon}}" mode="cover" src="/images/{{item.icon}}.png"></image></view>
+        <view class="text">{{item.text}}</view>
+        <image class="arrow" mode="cover" src="/images/arrow.png"></image>
+      </button>
+    </view>
+  </view>
+</full-page>
