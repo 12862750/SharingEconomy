@@ -537,7 +537,7 @@ Page({
   //过滤目标设备
   filterDevice(device) {
     var data = device[0].name;
-    if (data && this.data.deviceInfo.deviceNumber === data) {
+    if (data && this.data.deviceInfo.deviceBrand === data) {
       var obj = { name: device[0].name, deviceId: device[0].deviceId }
       return obj
     }
