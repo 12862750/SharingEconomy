@@ -17,8 +17,6 @@ import {
 import { checkSession } from '../../utils/util';
 const token = wx.getStorageSync('token');
 
-import { BTManager, ConnectStatus } from './wx-ant-ble/index.js';
-
 const app = getApp();
 
 Page({
@@ -42,20 +40,19 @@ Page({
     deviceInfo: {},
     userBalance: 0,
     connStatus: '连接中...',
+ 
     // 蓝牙是否连接
     connected: false,
-    // 成功连接的设备
-    device: {},
-    // 扫描到的设备
-    devices: [],
-    // 设备能够notify的特征
-    notifyUUIDs: [],
-    // 设备能够read的特征
-    readUUIDs: [],
-    // 设备能够write的特征
-    writeUUIDs: [],
+    device_info: ["BT","C"],//合法设备前缀
+    server_info: "0000FF",//合法服务前缀
+    device_id: "",
+    service_id: "",
+    write_id: null,
+    notify_id: null,
+    read_id: null,
     // 发送指令后返回结果
-    writeReturn: false
+    writeReturn: false,
+    onOpenNotify: null
   },
 
   /**
@@ -73,24 +70,33 @@ Page({
     this.setData({
       deviceNumber: deviceName
     })
- 
-    // 初始化蓝牙管理器
-    this.bt = new BTManager({
-      debug: true
-    });
-    // 注册状态回调
-    this.bt.registerDidUpdateConnectStatus(this.didUpdateConnectStatus.bind(this));
-    // 注册发现外设回调
-    this.bt.registerDidDiscoverDevice(this.didDiscoverDevice.bind(this));
-    // 注册特征值改变回调
-    this.bt.registerDidUpdateValueForCharacteristic(this.didUpdateValueForCharacteristic.bind(this));
   },
 
+  //查询设备信息成功，扫描连接设备
+  onShow() {
+    checkSession(token)
+      .then((code) => {
+        return code ? toLogin(code) : Promise.resolve({});
+      })
+      .then(({ result }) => {
+        if (result) {
+          FETCH_CONFIG.TOKEN = result.token;
+          FETCH_CONFIG.UID = result.uid;
+          wx.setStorageSync('token', result.token);
+          wx.setStorageSync('uid', result.uid);
+        }
+        if (!this.data.connected) {
+          this.pageInit();
+        }
+      });
+  },
+
+  //初始界面设备信息和蓝牙搜索连接
   pageInit() {
     wx.showLoading({
       title: '信息加载中...',
     })
-     
+    //查询扫描的设备
     Promise.all([fetchUserBalance(), fetchDeviceInfo(this.data.deviceNumber)])
       .then(([{ result: userBalance}, { result: deviceInfo }]) => {
         wx.hideLoading();
@@ -98,7 +104,12 @@ Page({
           deviceInfo,
           userBalance,
         })
-        this._scan()
+
+        //开始连接设备
+        this.connect();
+        this.onNotifyChange(function (msg) {
+          console.log(msg);
+        })
       })
       .catch((res) => {
         wx.hideLoading();
@@ -109,31 +120,52 @@ Page({
         })
       })
   },
+  //选择支付类型
   onPayTypeChange(e) {
     const { value } = e.detail;
     this.setData({
       payType: value,
     });
   },
+  //输入卡号
   onInput(e) {
     const { value } = e.detail;
     this.setData({
       cardNum: value,
     });
   },
+  //扫描卡号
   onScanTap() {
     var _this = this
+    var that = this;
     wx.scanCode({
-      onlyFromCamera: true,
-      scanType: ['qrCode'],
-      success(res) {
-        console.log(res);
-        _this.setData({
-          cardNum: res.result,
+      success: (res) => {
+        const path = res.result
+        var scanCoupon = '0'
+        if (path.length > 20) {
+          let q = decodeURIComponent(path)
+          scanCoupon = Utils.getQueryString(q, 'id')
+        }
+        if (scanCoupon === '0' || scanCoupon === 'undefined' || scanCoupon === null) {
+          scanCoupon = path
+        }
+        that.setData({
+          cardNum: scanCoupon
         });
+      },
+      fail: (res) => {
+        wx.showToast({
+          title: '扫描失败',
+          icon: 'success',
+          duration: 2000
+        })
+      },
+      complete: (res) => {
       }
     })
   },
+
+ //开始先核销数据，核销成功，再开启设备
   onStartTap() {
     const {
       payType,
@@ -163,9 +195,11 @@ Page({
           if (result.status === 'success') {
             var rawData = result.result
             if (rawData.indexOf('成功') != -1) {
+              //发送指令到设备
+              this.sendMsg("FFDF03002D230032");
               wx.showModal({
                 title: '支付结果',
-                content: rawData,
+                content: rawData+':请等待设备开启！',
                 showCancel: false,
                 confirmText: "知道了",
                 success: function (resss) {
@@ -195,286 +229,331 @@ Page({
         })
     }
   },
-  //查询设备信息成功，扫描连接设备
-  onShow() {
-    checkSession(token)
-      .then((code) => {
-        return code ? toLogin(code) : Promise.resolve({});
-      })
-      .then(({ result }) => {
-        if (result) {
-          FETCH_CONFIG.TOKEN = result.token;
-          FETCH_CONFIG.UID = result.uid;
-          wx.setStorageSync('token', result.token);
-          wx.setStorageSync('uid', result.uid);
-        }
-        this.pageInit();
-      });
-  },
-
-  //发送指令到设备
-  bindPrintText: function () {
-    //检查输入的光波卡
-    if (!this.data.cardNum) {
-      wx.showToast({
-        title: '请输入光波卡号或扫描光波卡',
-        mask: true,
-        icon: 'none',
-      });
-      return null;
-    }else{
-      this._write('FFDF03002D230032');
-    }
-  },
-
+  
   //离开界面，断开连接
   onHide(){
-    this.bt.disconnect()
+    //this.disconnect()
   },
   onUnload() {
-    this.bt.disconnect()
+    this.disconnect()
   },
 
   //-----开始------蓝牙使用方法-------------
-  // 状态改变回调
-  didUpdateConnectStatus(res) {
-    console.log('home registerDidUpdateConnectStatus', res);
-    if (res.connectStatus === ConnectStatus.connected) {
-      wx.hideLoading();
-      wx.showToast({
-        title: '连接成功',
-        icon: 'none',
-        timeout: 3000
-      })
-      this.setData({ connected: true, device: res.device, connStatus: '连接成功' });
-      this.parseDeviceUUIDs(res.device);
-    } else if (res.connectStatus === ConnectStatus.disconnected) {
-      wx.hideLoading();
-      wx.showToast({
-        title: '连接失败',
-        icon: 'none',
-        timeout: 3000
-      })
-      this.setData({ connected: false, connStatus: '连接失败', notifyUUIDs: [], readUUIDs: [], writeUUIDs: [] });
-    }else{
-      wx.showToast({
-        title: '无法连接',
-        icon: 'none',
-        timeout: 3000
-      })
-      this.setData({ connected: false, connStatus: res.message })
+  /**连接模块 */
+  connect() {
+    if (!wx.openBluetoothAdapter) {
+      this.showError("当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。");
+      return;
     }
+    var _this = this;
+    wx.openBluetoothAdapter({
+      success: function (res) {
+        console.log('--openBluetoothAdapter:', res)
+      },
+      complete(res) {
+        wx.onBluetoothAdapterStateChange(function (res) {
+          if (res.available) {
+            setTimeout(function () {
+              _this.connect();
+            }, 2000);
+          }
+        })
+        _this.getBlueState();
+      },
+      fail(res) {
+        wx.showToast({
+          icon: 'none',
+          title: '请检查蓝牙是否可用！',
+          timeout: 5000
+        })
+      }
+    })
   },
 
-  // 发现外设回调
-  didDiscoverDevice(res) {
-    console.log('home didDiscoverDevice', res);
-    if (res.timeout) {
-      console.log('home didDiscoverDevice', '扫描超时');
-      wx.showToast({
-        title: '扫描超时',
-        icon: 'none',
-        timeout: 3000
-      })
-    } else {
-      let device = res.device;//扫描的设备
-      let devices = this.data.devices;//已扫描的设备
-      function checkDevice(d, ds) {
-        for (let v of ds) {
-          if (d.deviceId && v.deviceId === d.deviceId) {
-            return true;
+  //获取蓝牙状态
+  getBlueState() {
+    var _this = this;
+    if (_this.data.device_id != "") {
+      _this.connectDevice();
+      return;
+    }
+    wx.getBluetoothAdapterState({
+      success: function (res) {
+        console.log('--getBluetoothAdapterState:', res)
+        if (!!res && res.available) {//蓝牙可用    
+          _this.startSearch();
+        }
+      },
+      fail: function (res) {
+        wx.showToast({
+          icon: 'none',
+          title: '请开启手机蓝牙开关！',
+          timeout: 5000
+        })
+      }
+    })
+  },
+
+  //开始搜索
+  startSearch() {
+    var _this = this;
+    wx.startBluetoothDevicesDiscovery({
+      services: [],
+      success(res) {
+        console.log('--startBluetoothDevicesDiscovery:', res)
+        wx.onBluetoothDeviceFound(function (res) {
+           
+          console.log('--onBluetoothDeviceFound:', res)
+          var device = _this.filterDevice(res.devices);
+          if (device) {
+            _this.setData({ device_id: device.deviceId})
+            _this.stopSearch();
+            _this.connectDevice();
+          }
+        });
+      },
+      fail(res) {
+        wx.showToast({
+          icon: 'none',
+          title: '搜索不到蓝牙，请重试！',
+          timeout: 5000
+        })
+      }
+    })
+  },
+  //停止搜索周边设备  
+  stopSearch() {
+    var _this = this;
+    wx.stopBluetoothDevicesDiscovery({
+      success: function (res) {
+        console.log('--stopBluetoothDevicesDiscovery:', res)
+      }
+    })
+  },
+
+  //连接到设备
+  connectDevice() {
+    var _this = this;
+    wx.createBLEConnection({
+      deviceId: _this.data.device_id,
+      success(res) {
+        console.log('--createBLEConnection:', res)
+        _this.getDeviceService();
+      },
+      fail(res) {
+        wx.showToast({
+          icon: 'none',
+          title: '无法连接蓝牙，请重试！',
+          timeout: 5000
+        })
+      }
+    })
+  },
+  //搜索设备服务
+  getDeviceService() {
+    var _this = this;
+    wx.getBLEDeviceServices({
+      deviceId: _this.data.device_id,
+      success: function (res) {
+        console.log('--getBLEDeviceServices:', res)
+        //var services = _this.filterService(res.services);
+        var service_id = _this.filterService(res.services);
+        if (service_id != "") {
+          _this.setData({ service_id: service_id })
+
+          wx.getBLEDeviceCharacteristics({
+            deviceId: _this.data.device_id,
+            serviceId: service_id,
+            success: function (res) {
+              console.log('--success getBLEDeviceCharacteristics:', res)
+              let notify_id, write_id, read_id;
+              for (let i = 0; i < res.characteristics.length; i++) {
+                let charc = res.characteristics[i];
+                if (charc.properties.notify) {
+                  notify_id = charc.uuid;
+                }
+                if (charc.properties.write) {
+                  write_id = charc.uuid;
+                }
+                if (charc.properties.read) {
+                  read_id = charc.uuid;
+                }
+              }
+              if (notify_id != null && write_id != null) {
+                _this.setData({
+                  notify_id: notify_id,
+                  write_id: write_id,
+                  read_id: read_id,
+                  connected: true,
+                  connStatus: '连接成功'
+                })
+                debugger
+                _this.openNotify();
+              }
+            },
+            complete: function (res) {
+              console.log('-complete-getBLEDeviceCharacteristics:', res)
+            },
+            fail: function (res) {
+              wx.showToast({
+                icon: 'none',
+                title: '获取特征值失败，请重试！',
+                timeout: 5000
+              })
+            }
+          })
+
+        }
+        
+      }
+    })
+  },
+  //获取连接设备的所有特征值  
+  getDeviceCharacter(service_id) {
+    let _this = this;
+    let serviceId = service_id
+    let serviceIdData = _this.data.service_id
+     
+    wx.getBLEDeviceCharacteristics({
+      deviceId: _this.data.device_id,
+      serviceId: serviceId,
+      success: function (res) {
+        console.log('--success getBLEDeviceCharacteristics:', res)
+        let notify_id, write_id, read_id;
+        for (let i = 0; i < res.characteristics.length; i++) {
+          let charc = res.characteristics[i];
+           
+          if (charc.properties.notify && charc.properties.write) {
+            notify_id = charc.uuid;
+            write_id = charc.uuid;
+            break
+          }
+          if (charc.properties.read) {
+            read_id = charc.uuid;
           }
         }
-        return false;
-      }
-
-      if (!checkDevice(device, devices) && device != undefined && device.deviceId != undefined) {
-        let deviceId = ""
-        if ('ios' === this.data.sysInfo.platform || 'IOS' === this.data.sysInfo.platform) {
-          deviceId = device.advertisData;//IOS版本扫描的设备ID
-        } else if ('android' === this.data.sysInfo.platform){
-          deviceId = device.deviceId.toString().replace(/:/g, "");//安卓版本扫描的设备ID
+        if (notify_id != null && write_id != null) {
+          _this.setData({ 
+            notify_id: notify_id, 
+            write_id: write_id, 
+            read_id: read_id})
+             
+          _this.openNotify();
         }
-
-        //必须是跟表中设备一致才添加
-        let deviceBrand = this.data.deviceInfo.deviceBrand.toString().replace(/:/g, "");//表中的ID
-        if (deviceId.toLowerCase().indexOf(deviceBrand.toLowerCase()) != -1){
-          devices.push(device);
-          this._connect(device);
-        }
-      }else{
+      },
+      complete: function(res) {
+         
+        console.log('-complete-getBLEDeviceCharacteristics:', res)
+      },
+      fail: function (res) {
+         
         wx.showToast({
-          title: '找不到设备',
           icon: 'none',
-          timeout: 3000
+          title: '获取特征值失败，请重试！',
+          timeout: 5000
         })
-        this.setData({ connected: false, connStatus: '找不到设备' })
       }
-      this.setData({ devices });
-    }
+    })
+  },
+  openNotify() {
+    var _this = this;
+    wx.notifyBLECharacteristicValueChange({
+      state: true,
+      deviceId: _this.data.device_id,
+      serviceId: _this.data.service_id,
+      characteristicId: _this.data.notify_id,
+      complete(res) {
+        console.log('--notifyBLECharacteristicValueChange:', res)
+        setTimeout(function () {
+          _this.onOpenNotify;
+        }, 1000);
+        _this.onNotifyChange();//接受消息
+      },
+      fail(res) {
+        console.log('启动notify:' + res.errMsg);
+      },
+
+    })
   },
 
-  // 特征值改变回调
-  didUpdateValueForCharacteristic(res) {
-    console.log('home registerDidUpdateValueForCharacteristic', res);
-    let deviceId = ""
-    if ('ios' === this.data.sysInfo.platform || 'IOS' === this.data.sysInfo.platform) {
-      deviceId = res.device.advertisData;//IOS版本扫描的设备ID
-    } else if ('android' === this.data.sysInfo.platform) {
-      deviceId = res.deviceId.toString().replace(/:/g, "");//安卓版本扫描的设备ID
-    }
-
-    //必须是跟表中设备一致
-    let deviceBrand = this.data.deviceInfo.deviceBrand.toString().replace(/:/g, "");//表中的ID
-    if (deviceId.toLowerCase().indexOf(deviceBrand.toLowerCase()) != -1) {
-      wx.showToast({
-        title: '已开机成功！',
-        icon: 'none',
-        timeout: 3000
-      })
-      this.setData({
-        writeReturn: true
-      })
-      //调用后台核销光波卡
-      this.onStartTap()
-    }
+  //监听消息
+  onNotifyChange(callback) {
+    var _this = this;
+    wx.onBLECharacteristicValueChange(function (res) {
+      callback && callback(msg);
+       
+      console.log('--onBLECharacteristicValueChange:', res);
+    })
   },
 
-  //连接成功，解析UUIDS
-  parseDeviceUUIDs(device) {
-    let { notifyUUIDs, readUUIDs, writeUUIDs } = this.data;
-    for (let service of device.services) {
-      for (let char of service.characteristics) {
-        if (char.properties.notify) {
-          notifyUUIDs.push({
-            suuid: service.serviceId,
-            cuuid: char.uuid,
-            listening: false
-          })
-        }
-        if (char.properties.read) {
-          readUUIDs.push({
-            suuid: service.serviceId,
-            cuuid: char.uuid,
-          })
-        }
-        if (char.properties.write) {
-          writeUUIDs.push({
-            suuid: service.serviceId,
-            cuuid: char.uuid,
-          })
-        }
+  //发送消息
+  sendMsg(msg, toArrayBuf = true) {
+    let _this = this;
+    let buf = toArrayBuf ? this.hexStringToArrayBuffer(msg) : msg;
+    wx.writeBLECharacteristicValue({
+      deviceId: _this.data.device_id,
+      serviceId: _this.data.service_id,
+      characteristicId: _this.data.write_id,
+      value: buf,
+      success: function (res) {
+        console.log('--sendMsg:', res);
+      },
+      fail: function (res) {
+        console.log('--sendMsg err:', res);
+      }
+    })
+  },
+
+  //断开 连接 
+  disconnect() {
+    var _this = this;
+    wx.closeBLEConnection({
+      deviceId: _this.data.device_id,
+      success(res) {
+      }
+    })
+  },
+  /*事件通信模块*/
+
+  /*其他辅助模块*/
+  hexStringToArrayBuffer(str) {
+    if (!str) {
+      return new ArrayBuffer(0);
+    }
+
+    var buffer = new ArrayBuffer(str.length);
+    let dataView = new DataView(buffer)
+
+    let ind = 0;
+    for (var i = 0, len = str.length; i < len; i += 2) {
+      let code = parseInt(str.substr(i, 2), 16)
+      dataView.setUint8(ind, code)
+      ind++
+    }
+
+    return buffer;
+  },
+
+  //过滤目标设备
+  filterDevice(device) {
+    var data = device[0].name;
+    if (data && this.data.deviceInfo.deviceNumber === data) {
+      var obj = { name: device[0].name, deviceId: device[0].deviceId }
+      return obj
+    }
+  },
+  //过滤主服务
+  filterService(services) {
+    let service_id = "";
+    for (let i = 0; i < services.length; i++) {
+      debugger
+      if (services[i].uuid.toUpperCase().indexOf(this.data.server_info) != -1) {
+        service_id = services[i].uuid;
+        break;
       }
     }
-    this.setData({ notifyUUIDs, readUUIDs, writeUUIDs });
-  },
 
-  // 扫描
-  _scan() {
-    if (!this.data.connected){
-      this.bt.scan({
-        services: [],
-        allowDuplicatesKey: false,
-        interval: 0,
-        timeout: 15000,
-        deviceName: '',
-        containName: ''
-      }).then(res => {
-        console.log('home scan success', res);
-      }).catch(e => {
-        console.log('home scan fail', e);
-        wx.showToast({
-          title: e.message,
-          icon: 'none',
-          timeout:3000
-        });
-      });
-    }
-  },
-
-  // 停止扫描
-  _stopScan() {
-    this.bt.stopScan().then(res => {
-      console.log('home stopScan success', res);
-    }).catch(e => {
-      console.log('home stopScan fail', e);
-    })
-  },
-
-  // 连接
-  _connect(mydevice) {
-    this.bt.stopScan();
-    let device = mydevice;
-    this.bt.connect(device).then(res => {
-      console.log('home connect success', res);
-    }).catch(e => {
-      wx.showToast({
-        title: e.message,
-        icon: 'none',
-        timeout: 3000
-      });
-      console.log('home connect fail', e);
-    });
-    wx.showLoading({
-      title: '连接' + device.name,
-    });
-  },
-
-  // 断开连接
-  _disconnect() {
-    this.bt.disconnect().then(res => {
-      console.log('home disconnect success', res);
-    }).catch(e => {
-      console.log('home disconnect fail', e);
-    })
-  },
-
-  // 监听/停止监听
-  _notify() {
-    let index = 0;
-    let { suuid, cuuid, listening } = this.data.notifyUUIDs[index];
-    this.bt.notify({
-      suuid, cuuid, state: !listening
-    }).then(res => {
-      console.log('home notify success', res);
-      this.setData({ [`notifyUUIDs[${index}].listening`]: !listening });
-    }).catch(e => {
-      console.log('home notify fail', e);
-    })
-  },
-
-  // 读特征值
-  _read(e) {
-    let index = e.currentTarget.id;
-    let { suuid, cuuid } = this.data.readUUIDs[index];
-    this.bt.read({
-      suuid, cuuid
-    }).then(res => {
-      console.log('home read success', res);
-    }).catch(e => {
-      console.log('home read fail', e);
-    })
-  },
-
-  // 向蓝牙模块写入数据，这里只做简单的例子，发送的是 'FFFF' 的十六进制字符串
-  _write(txt) {
-    let index = 0;
-    let { suuid, cuuid } = this.data.writeUUIDs[index];
-    this.bt.write({
-      suuid,
-      cuuid,
-      value: txt
-    }).then(res => {
-      console.log('home write success', res);
-      this._notify()
-      wx.showToast({
-        title: '发送开机指令成功！',
-        icon: 'none',
-        timeout: 3000
-      })
-    }).catch(e => {
-      console.log('home write fail', e);
-    })
+    return service_id;
   },
   //-----结束------蓝牙使用方法
 

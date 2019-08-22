@@ -29,7 +29,7 @@
             </view>
           </view>
         </radio-group>
-        <button class="start-btn" bindtap="bindPrintText">开启设备</button>
+        <button class="start-btn" bindtap="onStartTap">开启设备</button>
       </view>
     </view>
   </view>

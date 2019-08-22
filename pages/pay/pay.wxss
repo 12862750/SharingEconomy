@@ -70,8 +70,8 @@
 }
 
 .pay-type .pay-type-list .pay-type-item .radio-icon {
-  width: 30rpx;
-  height: 30rpx;
+  width: 40rpx;
+  height: 40rpx;
   position: absolute;
   left: 28rpx;
   top: 50%;
@@ -88,10 +88,10 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  right: 28rpx;
+  right: 20rpx;
   margin: auto;
-  width: 39rpx;
-  height: 39rpx;
+  width: 59rpx;
+  height: 59rpx;
 }
 
 .pay-type .pay-type-list .pay-type-item .addon {
