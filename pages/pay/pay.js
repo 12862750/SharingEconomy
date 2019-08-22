@@ -254,8 +254,18 @@ Page({
     //定时器
     setTimeout(function () {
       _this.setData({ stopSearch: true })
-      wx.closeBluetoothAdapter()
       _this.stopSearch();
+      //提示找不到设备
+      if(!_this.data.connected){
+        _this.setData({
+          connStatus: '找不到设备'
+        })
+        wx.showToast({
+          title: '找不到设备',
+          icon: 'success',
+          duration: 5000
+        })
+      }
     }, 10000);
 
     wx.openBluetoothAdapter({
@@ -365,7 +375,7 @@ Page({
         var service_id = _this.filterService(res.services);
         if (service_id != "") {
           _this.setData({ service_id: service_id })
-
+          //获取连接设备的所有特征值  
           wx.getBLEDeviceCharacteristics({
             deviceId: _this.data.device_id,
             serviceId: service_id,
@@ -412,53 +422,7 @@ Page({
       }
     })
   },
-  //获取连接设备的所有特征值  
-  getDeviceCharacter(service_id) {
-    let _this = this;
-    let serviceId = service_id
-    let serviceIdData = _this.data.service_id
-     
-    wx.getBLEDeviceCharacteristics({
-      deviceId: _this.data.device_id,
-      serviceId: serviceId,
-      success: function (res) {
-        console.log('--success getBLEDeviceCharacteristics:', res)
-        let notify_id, write_id, read_id;
-        for (let i = 0; i < res.characteristics.length; i++) {
-          let charc = res.characteristics[i];
-           
-          if (charc.properties.notify && charc.properties.write) {
-            notify_id = charc.uuid;
-            write_id = charc.uuid;
-            break
-          }
-          if (charc.properties.read) {
-            read_id = charc.uuid;
-          }
-        }
-        if (notify_id != null && write_id != null) {
-          _this.setData({ 
-            notify_id: notify_id, 
-            write_id: write_id, 
-            read_id: read_id})
-             
-          _this.openNotify();
-        }
-      },
-      complete: function(res) {
-         
-        console.log('-complete-getBLEDeviceCharacteristics:', res)
-      },
-      fail: function (res) {
-         
-        wx.showToast({
-          icon: 'none',
-          title: '获取特征值失败，请重试！',
-          timeout: 5000
-        })
-      }
-    })
-  },
+ 
   openNotify() {
     var _this = this;
     wx.notifyBLECharacteristicValueChange({
