@@ -484,6 +484,12 @@ Page({
       success(res) {
       }
     })
+    wx.closeBluetoothAdapter({
+      success(res) {
+      },
+      fail(res) {
+      }
+    })
   },
   /*事件通信模块*/
 
