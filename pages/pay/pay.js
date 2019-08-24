@@ -266,7 +266,7 @@ Page({
           duration: 5000
         })
       }
-    }, 10000);
+    }, 20000);
 
     wx.openBluetoothAdapter({
       success: function (res) {
@@ -324,12 +324,10 @@ Page({
       success(res) {
         console.log('--startBluetoothDevicesDiscovery:', res)
         wx.onBluetoothDeviceFound(function (res) {
-           
           console.log('--onBluetoothDeviceFound:', res)
           var device = _this.filterDevice(res.devices);
           if (device) {
             _this.setData({ device_id: device.deviceId})
-            _this.stopSearch();
             _this.connectDevice();
           }
         });
@@ -440,6 +438,7 @@ Page({
           _this.onOpenNotify;
         }, 1000);
         _this.onNotifyChange();//接受消息
+        _this.stopSearch();
       },
       fail(res) {
         console.log('启动notify:' + res.errMsg);
