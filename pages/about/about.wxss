@@ -1,0 +1,11 @@
+/* pages/about/about.wxss */
+.content {
+  padding-top: 170rpx;
+}
+
+.about-bg {
+  width: 610rpx;
+  height: 667rpx;
+  display: block;
+  margin: auto;
+}

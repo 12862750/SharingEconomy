@@ -115,3 +115,25 @@ export const payToStart = (data) => {
     { method: 'POST' }
   )
 }
+
+/**
+ * 获取订单记录
+ */
+
+export const getOrderList = () => {
+  return fetchWithToken(
+    API.GET_ORDER_LIST
+  )
+}
+
+/**
+ * 提交加盟信息
+ */
+
+export const submitAddJoin = (data) => {
+  return fetchWithToken(
+    API.ADD_JOIN,
+    data,
+    { method: 'POST' }
+  )
+}

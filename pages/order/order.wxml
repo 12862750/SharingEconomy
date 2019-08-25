@@ -1,0 +1,30 @@
+<full-page title="订单记录">
+  <view class="full-container">
+    <view class="content">
+      <block wx:if="{{!isLoading}}">
+        <view class="order-list" wx:if="{{orderList.length}}">
+          <view
+            class="order-list-item"
+            wx:for="{{orderList}}"
+            wx:for-item="order"
+            wx:key="{{order.id}}"
+          >
+            <view class="top">
+              <text>{{order.name}}</text>
+              <text>{{order.type}}</text>
+              <text>{{order.status}}</text>
+            </view>
+            <view class="bottom">
+              <text>{{order.time}}</text>
+              <text>{{order.applied}}元</text>
+            </view>
+          </view>
+        </view>
+        <block wx:else>
+          <image class="empty-image" mode="cover" src="/images/order_list_empty.png" />
+          <view class="empty-text">暂无订单记录</view>
+        </block>
+      </block>
+    </view>
+  </view>
+</full-page>

@@ -1,9 +1,5 @@
 .content {
-  height: 100%;
-  box-sizing: border-box;
-  background-color: #fff;
   padding-top: 260rpx;
-  position: relative;
 }
 
 .user {
@@ -33,6 +29,11 @@
 .user view {
   height: 60rpx;
   line-height: 60rpx;
+}
+
+.user .bind-btn {
+  font-size: 28rpx;
+  width: 200rpx;
 }
 
 .operation {

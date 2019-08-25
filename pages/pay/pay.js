@@ -1,7 +1,6 @@
 // pages/pay/pay.js
 import {
   toLogin,
-  fetchUserInfo,
   fetchUserBalance,
   fetchDeviceInfo,
   payToStart,

@@ -1,0 +1,7 @@
+<full-page title="关于我们">
+  <view class="full-container">
+    <view class="content">
+      <image class="about-bg" mode="cover" src="/images/about_bg.png"></image>
+    </view>
+  </view>
+</full-page>

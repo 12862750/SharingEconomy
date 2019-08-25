@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "full-page": "/components/full-page/full-page"
+  },
+  "navigationStyle": "custom"
+}

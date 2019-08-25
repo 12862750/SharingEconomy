@@ -31,6 +31,8 @@
 	"isGameTourist": false,
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
+	"cloudfunctionRoot": "clouds/",
+	"cloudfunctionTemplateRoot": "cloudfunctionTemplate",
 	"condition": {
 		"search": {
 			"current": -1,
@@ -49,7 +51,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 1,
+			"current": 4,
 			"list": [
 				{
 					"id": 0,
@@ -63,6 +65,26 @@
 					"name": "个人中心",
 					"pathName": "pages/personal/personal",
 					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "订单记录",
+					"pathName": "pages/order/order",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "关于我们",
+					"pathName": "pages/about/about",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "我要加盟",
+					"pathName": "pages/join/join",
 					"scene": null
 				}
 			]
