@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "full-page": "/components/full-page/full-page",
+    "form-item": "/components/form-item/form-item"
+  },
+  "navigationStyle": "custom"
+}

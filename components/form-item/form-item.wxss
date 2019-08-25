@@ -1,0 +1,38 @@
+.form-item {
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  background-color: #fff;
+}
+
+.form-item.hor {
+  display: flex;
+  height: 100rpx;
+  border-bottom: 2rpx solid #f4f4f4;
+  align-items: stretch;
+}
+
+.form-item.ver {
+  padding-bottom: 24rpx;
+}
+
+.form-label {
+  display: flex;
+  align-items: center;
+  width: 220rpx;
+}
+
+.ver .form-label {
+  display: block;
+  padding: 34rpx 0 24rpx;
+  width: auto;
+}
+
+.form-input {
+  height: 100%;
+  flex: 1;
+}
+
+.form-textarea {
+  height: 168rpx;
+  width: 100%;
+}

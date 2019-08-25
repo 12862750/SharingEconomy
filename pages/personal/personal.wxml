@@ -1,5 +1,5 @@
 <full-page title="个人中心">
-  <view class="full-container{{isIPX ?  ' ipx' : ''}}">
+  <view class="full-container pt">
     <view class="content">
       <view class="user">
         <button
@@ -11,14 +11,23 @@
         <block wx:else>
           <image mode="cover" src="{{userInfo.avatarUrl}}" />
           <view>{{userInfo.nickName}}</view>
-          <!-- <view>185****2222</view> -->
+          <view wx:if="{{mobile}}">{{mobile}}</view>
+          <button wx:else class="bind-btn" plain open-type="getPhoneNumber" bindgetphonenumber="onGetPhone">绑定手机</button>
         </block>
       </view>
-      <button class="operation" wx:for="{{operationList}}" wx:key="{{item.icon}}">
-        <view class="icon"><image class="{{item.icon}}" mode="cover" src="/images/{{item.icon}}.png"></image></view>
-        <view class="text">{{item.text}}</view>
-        <image class="arrow" mode="cover" src="/images/arrow.png"></image>
-      </button>
+      <block wx:if="{{userInfo}}">
+        <button
+          class="operation"
+          wx:for="{{operationList}}"
+          bindtap="onListTap"
+          data-type="{{item.type}}"
+          wx:key="{{item.type}}"
+        >
+          <view class="icon"><image class="{{item.type}}" mode="cover" src="/images/{{item.type}}.png"></image></view>
+          <view class="text">{{item.text}}</view>
+          <image class="arrow" mode="cover" src="/images/arrow.png"></image>
+        </button>
+      </block>
     </view>
   </view>
 </full-page>

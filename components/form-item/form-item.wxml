@@ -1,0 +1,23 @@
+<view class="form-item {{type === 'textarea' ? 'ver' : 'hor'}}">
+  <label for="{{id}}" class="form-label" bindtap="onLabelTap">{{label}}</label>
+  <textarea
+    wx:if="{{type === 'textarea'}}"
+    class="form-textarea"
+    name="{{name}}"
+    id="{{id}}"
+    focus="{{focus}}"
+    placeholder="{{placeholder}}"
+    maxlength="{{20}}"
+    bindinput="onInput"
+  />
+  <input
+    wx:else
+    class="form-input"
+    name="{{name}}"
+    id="{{id}}"
+    type="{{type}}"
+    focus="{{focus}}"
+    placeholder="{{placeholder}}"
+    bindinput="onInput"
+  />
+</view>

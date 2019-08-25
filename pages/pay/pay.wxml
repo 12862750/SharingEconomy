@@ -1,5 +1,5 @@
 <full-page title="支付">
-  <view class="full-container{{isIPX ?  ' ipx' : ''}}">
+  <view class="full-container pt{{isIPX ?  ' ipx' : ''}}">
     <view class="content">
       <view class="top-card">
         <view><label>网点名称:</label>{{deviceInfo.shopName}}</view>
@@ -29,7 +29,7 @@
             </view>
           </view>
         </radio-group>
-        <button class="start-btn" bindtap="onStartTap">开启设备</button>
+        <button class="confirm-btn" bindtap="onStartTap">开启设备</button>
       </view>
     </view>
   </view>

@@ -20,6 +20,10 @@ export const API = {
   PAY_TO_START: '/landing/order/orders',
   // 获取设备信息
   GET_DEVICE_INFO: '/landing/mine/getOneShopDevices',
+  // 获取订单记录
+  GET_ORDER_LIST: '/landing/mine/getConsumeList',
+  // 提交加盟信息
+  ADD_JOIN: '/landing/mine/addJoin',
 }
 
 export const PAY_TYPE = {

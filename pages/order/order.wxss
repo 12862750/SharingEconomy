@@ -1,0 +1,67 @@
+/* pages/order/order.wxss */
+.content {
+  text-align: center;
+  background-color: #f6f6f6;
+}
+
+.content .empty-image {
+  width: 302rpx;
+  height: 267rpx;
+  margin-left: 94rpx;
+  margin-top: 190rpx;
+}
+
+.content .empty-text {
+  margin-top: 30rpx;
+  font-size: 38rpx;
+  color: #666;
+}
+
+.order-list {
+  padding: 18rpx 22rpx;
+}
+
+.order-list-item {
+  background-color: #fff;
+  padding: 34rpx 36rpx;
+  margin-bottom: 20rpx;
+  border-radius: 15rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 168rpx;
+  box-sizing: border-box;
+  font-size: 28rpx;
+}
+
+.order-list-item .top {
+  font-weight: bold;
+  display: flex;
+}
+
+.order-list-item .top text:nth-child(1) {
+  width: 130rpx;
+  text-align: left;
+}
+
+.order-list-item .top text:nth-child(3) {
+  flex: 1;
+  text-align: right;
+  color: #54cd9a;
+}
+
+.order-list-item .bottom {
+  display: flex;
+}
+
+.order-list-item .bottom text:nth-child(1) {
+  flex: 1;
+  text-align: left;
+  color: #888;
+}
+
+.order-list-item .bottom text:nth-child(2) {
+  flex: 1;
+  text-align: right;
+  font-size: 34rpx;
+}

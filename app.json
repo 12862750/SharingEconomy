@@ -2,7 +2,10 @@
   "pages": [
     "pages/index/index",
     "pages/pay/pay",
-    "pages/personal/personal"
+    "pages/personal/personal",
+    "pages/about/about",
+    "pages/join/join",
+    "pages/order/order"
   ],
   "permission": {
     "scope.userLocation": {

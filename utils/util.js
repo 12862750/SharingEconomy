@@ -34,3 +34,5 @@ export const checkSession = (token) => {
     }
   });
 };
+
+export const formatterPhoneNumber = (num) => num.replace(/(\d{3})\d+(\d{4})/, '$1****$2');
