@@ -53,7 +53,8 @@ Page({
     // 发送指令后返回结果
     writeReturn: false,
     onOpenNotify: null,
-    stopSearch:false
+    stopSearch:false,
+    isScan:false
   },
 
   /**
@@ -80,19 +81,21 @@ Page({
 
   //查询设备信息成功，扫描连接设备
   onShow() {
-    checkSession(token)
-      .then((code) => {
-        return code ? toLogin(code) : Promise.resolve({});
-      })
-      .then(({ result }) => {
-        if (result) {
-          FETCH_CONFIG.TOKEN = result.token;
-          FETCH_CONFIG.UID = result.uid;
-          wx.setStorageSync('token', result.token);
-          wx.setStorageSync('uid', result.uid);
-        }
-        
-      });
+    if (!this.data.isScan) {
+      checkSession(token)
+        .then((code) => {
+          return code ? toLogin(code) : Promise.resolve({});
+        })
+        .then(({ result }) => {
+          if (result) {
+            FETCH_CONFIG.TOKEN = result.token;
+            FETCH_CONFIG.UID = result.uid;
+            wx.setStorageSync('token', result.token);
+            wx.setStorageSync('uid', result.uid);
+          }
+
+        });
+    }
   },
 
   //初始界面设备信息和蓝牙搜索连接
@@ -141,7 +144,9 @@ Page({
   },
   //扫描卡号
   onScanTap() {
-    var _this = this
+    this.setData({
+      isScan: true
+    })
     var that = this;
     wx.scanCode({
       success: (res) => {
@@ -237,7 +242,9 @@ Page({
   
   //离开界面，断开连接
   onHide(){
-    this.disconnect()
+    if (!this.data.isScan){
+      this.disconnect()
+    }
   },
   onUnload() {
     this.disconnect()
