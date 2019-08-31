@@ -10,12 +10,19 @@ App({
 
     const token = wx.getStorageSync('token');
     const uid = wx.getStorageSync('uid');
+    const skey = wx.getStorageSync('skey')
     FETCH_CONFIG.TOKEN = token;
     FETCH_CONFIG.UID = uid;
+    FETCH_CONFIG.CODE = skey;
 
     checkSession(token)
       .then((code) => {
-        return code ? toLogin(code) : Promise.resolve({});
+        if (code) {
+          FETCH_CONFIG.CODE = code;
+          wx.setStorageSync('skey', code);
+          return toLogin(code);
+        }
+        return Promise.resolve({});
       })
       .then(({ result }) => {
         if (result) {

@@ -3,6 +3,7 @@ export const FETCH_CONFIG = {
   //BASE_API: 'http://localhost:8080/web_api',
   TOKEN: '',
   UID: '',
+  CODE: '',
 };
 
 export const API = {

@@ -72,9 +72,6 @@ Page({
   },
 
   onGetPhone(e) {
-    if (!e.detail.cloudID) {
-      return;
-    }
     wx.showLoading({
       title: '正在加载',
     });
@@ -82,19 +79,34 @@ Page({
     wx.cloud.callFunction({
       name: 'getPhoneNumber',
       data: {
-        phoneNumber: wx.cloud.CloudID(e.detail.cloudID),
+        ...e.detail,
+        code: FETCH_CONFIG.CODE,
       },
     })
       .then(res => {
         wx.hideLoading();
-        const { phoneNumber } = res.result.phoneNumber.data;
+        console.log(res);
+        const { data, err } = res.result;
+        if (err) {
+          wx.showToast({
+            title: err.errmsg,
+            icon: 'none'
+          })
+          return
+        }
+        const { phoneNumber } = data;
         this.setData({
           mobile: formatterPhoneNumber(phoneNumber),
-        })
+        });
+        this.bindPhoneNumber(phoneNumber);
       })
       .catch((err) => {
         wx.hideLoading();
         console.error(err);
       })
+  },
+
+  bindPhoneNumber(num) {
+    console.log(num)
   }
 })

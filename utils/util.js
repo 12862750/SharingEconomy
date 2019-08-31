@@ -15,7 +15,7 @@ export const checkSession = (token) => {
       })
     } else {
       wx.checkSession({
-        success: () => {
+        success: (res) => {
           resolve();
         },
         fail: () => {
