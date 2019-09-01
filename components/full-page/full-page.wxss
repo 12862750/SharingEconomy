@@ -1,6 +1,5 @@
 .full-page {
   height: 100vh;
-  background: linear-gradient(to right, #68d98a , #41c2a9);
   display: flex;
   box-sizing: border-box;
   flex-direction: column;
@@ -12,4 +11,11 @@
 
 .full-page .content .content-scroll {
   height: 100%;
+}
+
+.full-page .bg {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
 }

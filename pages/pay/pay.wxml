@@ -6,7 +6,7 @@
         <view><label>设备s/n:</label>{{deviceInfo.deviceNumber}}【{{connStatus}}】</view>
       </view>
       <view class="cost"><label>时间费用:</label>{{tool.toFixed(deviceInfo.appKey)}}/{{deviceInfo.operatorName}}分钟</view>
-      <view class="pay-type" wx:if="{{connected}}">
+      <view class="pay-type" wx:if="{{connected && !orderState}}">
         选择支付方式
         <radio-group class="pay-type-list" bindchange="onPayTypeChange">
           <view class="pay-type-item" wx:for="{{payTypeList}}" wx:key="{{item.id}}">
@@ -31,6 +31,7 @@
         </radio-group>
         <button class="confirm-btn" bindtap="onStartTap">开启设备</button>
       </view>
+      <text class="time-text" wx:if="{{orderState === 1}}">剩余时间: <text class="time">{{tool.formatterTime(timeText)}}</text></text>
     </view>
   </view>
 </full-page>
@@ -47,8 +48,17 @@ var toFixed = function(num) {
   return Number(num).toFixed(2);
 }
 
+var formatterTime = function(time) {
+  var min = Math.floor(time / 60);
+  var s = time % 60;
+  var sec = s < 10 ? ('0' + s) : s
+
+  return min + ':' + sec;
+}
+
 module.exports = {
   getRadioIcon: getRadioIcon,
-  toFixed: toFixed
+  toFixed: toFixed,
+  formatterTime: formatterTime
 }
 </wxs>

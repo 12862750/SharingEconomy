@@ -1,0 +1,23 @@
+<!--  bgFrom="#33e3e8" bgTo="#1ca5e8"  -->
+<full-page title="登录" bgImg="/adminImgs/login_bg.png" bgHeight="{{bgHeight}}px">
+  <view class="full-container" style="padding-top: {{contentPadingTop}}px">
+    <view class="content">
+      <view class="login-container">
+        <view class="login-input">
+          <view class="icon">
+            <image style="width: 36rpx; height: 24rpx;" src="/adminImgs/username.png"></image>
+          </view>
+          <input bindinput="onInput" data-type="username" placeholder="请输入用户名" />
+        </view>
+        <view class="login-input">
+          <view class="icon">
+            <image style="width: 30rpx; height: 36rpx;" src="/adminImgs/password.png"></image>
+          </view>
+          <input bindinput="onInput" data-type="password" type="password" placeholder="请输入密码" />
+        </view>
+        <view class="no-password"><text bindtap="onNoPasswordTap">忘记密码？</text></view>
+        <button class="login-btn" bindtap="onLogin">登 录</button>
+      </view>
+    </view>
+  </view>
+</full-page>

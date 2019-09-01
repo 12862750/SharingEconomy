@@ -7,7 +7,7 @@
     </view>
     <view class="search">
       <image class="icon" mode="cover" src="/images/search.png" />
-      <input placeholder="搜索附近的网点" bindinput="onSearch" bindfocus="onSearchFocus" bindblur="onSearchBlur" />
+      <input placeholder="搜索附近的网点" value="{{keyWord}}" bindinput="onSearch" bindfocus="onSearchFocus" bindblur="onSearchBlur" />
     </view>
   </view>
   <view class="map-wrap">
@@ -20,12 +20,25 @@
       bindtap="onMapTap"
       bindregionchange="onMapMove"
     >
+      <cover-view class="search-list" wx:if="{{isSearching && searchList.length}}">
+        <cover-view class="search-list-item" bindtap="onSearchCardTap" data-id="{{item.id}}" wx:for="{{searchList}}" wx:key="{{item.id}}">
+          <cover-view class="name">{{item.name}}</cover-view>
+          <cover-view class="phone">
+            联系电话:
+            <cover-view class="num" data-phone="{{item.phone}}" catchtap="onPhoneTap">
+              {{item.phone}}
+            </cover-view>
+          </cover-view>
+          <cover-view class="address">地址: {{item.address}}</cover-view>
+          <cover-image class="nav-icon" catchtap="onSearchCardTap" data-id="{{item.id}}" data-nav="{{true}}" src="/images/nav_green.png"></cover-image>
+        </cover-view>
+      </cover-view>
       <cover-view class="scan-btn" wx:if="{{!isFocus}}">
         <cover-image class="scan-bg" src="../../images/scan_btn.png" />
         <cover-image class="scan-icon" src="../../images/scan.png" />
         <button bindtap="onScanTap">扫一扫</button>
       </cover-view>
-      <cover-view class="local-btn" bindtap="onLocalTap" wx:if="{{!isFocus}}">
+      <cover-view class="local-btn" bindtap="onLocalTap" wx:if="{{!isFocus && !isSearching}}">
         <cover-view class="outer"></cover-view>
         <cover-view class="inner"></cover-view>
       </cover-view>

@@ -1,9 +1,10 @@
 // pages/personal/personal.js
 import {
   fetchUserInfo,
+  postPhone,
 } from '../../utils/fetch';
 import { FETCH_CONFIG } from '../../utils/const';
-import { formatterPhoneNumber } from '../../utils/util'
+import { formatterPhoneNumber, to } from '../../utils/util'
 
 const app = getApp();
 
@@ -71,42 +72,80 @@ Page({
     })
   },
 
-  onGetPhone(e) {
+  async onGetPhone(e) {
     wx.showLoading({
-      title: '正在加载',
+      title: '正在绑定',
     });
+    try {
+      const [code, getCodeErr] = await to(this.getCode());
+      if (getCodeErr) {
+        wx.showToast({
+          title: getCodeErr.errmsg,
+          icon: 'none',
+        });
+        return
+      }
+
+      const phoneRes = await to(this.getDecodePhoneInfo(e, code));
+      const [phoneNumber, errmsg] = this.getPhoneNumber(phoneRes);
+
+      if (errmsg) {
+        wx.showToast({
+          title: errmsg,
+          icon: 'none',
+        });
+        return
+      }
+
+      this.setData({
+        mobile: formatterPhoneNumber(phoneNumber),
+      });
+      this.bindPhoneNumber(phoneNumber);
+      wx.hideLoading();
+    } catch(e) {
+      console.log(e)
+      wx.showToast({
+        title: '绑定手机号失败，请重试',
+        icon: 'none',
+      })
+    }
+  },
+
+  getCode() {
+    return new Promise((resolve, reject) => {
+      wx.login({
+        success: res => {
+          resolve(res.code);
+        },
+        fail: err => {
+          reject(err);
+        }
+      })
+    })
+  },
+
+  getDecodePhoneInfo(e, code) {
     wx.cloud.init();
-    wx.cloud.callFunction({
+    return wx.cloud.callFunction({
       name: 'getPhoneNumber',
       data: {
         ...e.detail,
-        code: FETCH_CONFIG.CODE,
+        code,
       },
     })
-      .then(res => {
-        wx.hideLoading();
-        console.log(res);
-        const { data, err } = res.result;
-        if (err) {
-          wx.showToast({
-            title: err.errmsg,
-            icon: 'none'
-          })
-          return
-        }
-        const { phoneNumber } = data;
-        this.setData({
-          mobile: formatterPhoneNumber(phoneNumber),
-        });
-        this.bindPhoneNumber(phoneNumber);
-      })
-      .catch((err) => {
-        wx.hideLoading();
-        console.error(err);
-      })
+  },
+
+  getPhoneNumber([res, err]) {
+    if (err || res.result.err) {
+      return [null, err.errmsg];
+    }
+
+    const { phoneNumber } = res.result.data;
+
+    return [phoneNumber, null];
   },
 
   bindPhoneNumber(num) {
-    console.log(num)
+    postPhone(num)
   }
 })

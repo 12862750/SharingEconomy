@@ -4,6 +4,7 @@ import {
   fetchUserBalance,
   fetchDeviceInfo,
   payToStart,
+  getOrderState,
 } from '../../utils/fetch';
 import { PAY_TYPE, FETCH_CONFIG } from '../../utils/const';
 
@@ -13,7 +14,12 @@ import {
   getVirtualCurrencyData,
   getCardPayData,
 } from './util'
-import { checkSession } from '../../utils/util';
+import {
+  checkSession,
+  to,
+  showErrorToast,
+  ab2hex,
+} from '../../utils/util';
 const token = wx.getStorageSync('token');
 
 const app = getApp();
@@ -39,6 +45,7 @@ Page({
     deviceInfo: {},
     userBalance: 0,
     connStatus: '连接中...',
+    orderState: 2,
  
     // 蓝牙是否连接
     connected: false,
@@ -78,54 +85,102 @@ Page({
     }
   },
 
-  //查询设备信息成功，扫描连接设备
-  onShow() {
-    if (!this.data.isScan) {
-      checkSession(token)
-        .then((code) => {
-          return code ? toLogin(code) : Promise.resolve({});
-        })
-        .then(({ result }) => {
-          if (result) {
-            FETCH_CONFIG.TOKEN = result.token;
-            FETCH_CONFIG.UID = result.uid;
-            wx.setStorageSync('token', result.token);
-            wx.setStorageSync('uid', result.uid);
-          }
-
-        });
-    }
-  },
-
   //初始界面设备信息和蓝牙搜索连接
-  pageInit() {
+  async pageInit() {
     wx.showLoading({
       title: '信息加载中...',
     })
-    //查询扫描的设备
-    Promise.all([fetchUserBalance(), fetchDeviceInfo(this.data.deviceNumber)])
-      .then(([{ result: userBalance}, { result: deviceInfo }]) => {
-        wx.hideLoading();
-        this.setData({
+    
+    try {
+      const [infoRes, infoErr] = await to(this.getInfo());
+      if (infoErr) {
+        showErrorToast(infoErr.errmsg);
+        this.disconnect();
+        return;
+      }
+
+      this.setData(infoRes);
+
+      this.connect();
+      this.onNotifyChange(function (msg) {
+        console.log(msg);
+      })
+    } catch(e) {
+      console.error(e);
+      showErrorToast();
+    }
+
+    wx.hideLoading();
+  },
+
+  getInfo() {
+    return Promise.all([
+      fetchUserBalance(),
+      fetchDeviceInfo(this.data.deviceNumber)
+    ])
+      .then(([{ result: userBalance }, { result: deviceInfo }]) => (
+        {
           deviceInfo,
           userBalance,
+        }
+      ))
+      .catch((err) => Promise.reject(err));
+  },
+  setTimer() {
+    if (this.interval) {
+      clearInterval(this.interval);
+      this.interval = null;
+    }
+    this.interval = setInterval(() => {
+      this.setData({
+        timeText: --this.data.timeText
+      })
+
+      if (!this.data.timeText) {
+        this.setData({
+          orderState: 0
         })
 
+        clearInterval(this.interval);
+        this.interval = null;
+      }
+    }, 1000)
+  },
+  async checkDeviceState() {
+    wx.showLoading({
+      title: '正在检查设备状态',
+    });
+    try {
+      const [orderInfo, orderErr] = await to(getOrderState());
+      if (orderErr) {
+        showErrorToast(orderErr.errmsg);
+        return;
+      }
+
+      if (orderInfo.state) {
+        // 订单进行中，检测设备状态
+        const [msgRes, msgErr] = await to(this.sendMsg('FFDF0401000000E4'));
+
+        if (msgErr) {
+          showErrorToast('获取设备状态出错，请重新扫码！');
+          return;
+        }
+
+        this.setData({
+          orderState: 1,
+          timeText: this.data.deviceInfo.operatorName * 60 - orderInfo.timeUsed
+        })
+        this.setTimer();
+      } else {
         //开始连接设备
-        this.connect();
-        this.onNotifyChange(function (msg) {
-          console.log(msg);
+        this.setData({
+          orderState: 0
         })
-      })
-      .catch((res) => {
-        this.disconnect()
-        wx.hideLoading();
-        wx.showToast({
-          icon: 'none',
-          title: '发生未知错误，请重试！',
-          timeout: 5000
-        })
-      })
+      }
+    } catch(e) {
+      console.log(e);
+    }
+    wx.hideLoading();
   },
   //选择支付类型
   onPayTypeChange(e) {
@@ -217,6 +272,12 @@ Page({
                   }
                 }
               })
+              this.setData({
+                orderState: 1,
+                timeText: (this.data.deviceInfo.operatorName * 60)
+              })
+
+              this.setTimer();
             } else {
               wx.showModal({
                 title: '温馨提示',
@@ -445,11 +506,11 @@ Page({
         }, 1000);
         _this.onNotifyChange();//接受消息
         _this.stopSearch();
+        _this.checkDeviceState();
       },
       fail(res) {
         console.log('启动notify:' + res.errMsg);
       },
-
     })
   },
 
@@ -457,9 +518,15 @@ Page({
   onNotifyChange(callback) {
     var _this = this;
     wx.onBLECharacteristicValueChange(function (res) {
-      callback && callback(msg);
+      callback && callback(res);
        
       console.log('--onBLECharacteristicValueChange:', res);
+      console.log('--hex', ab2hex(res.value));
+      const state = ab2hex(res.value).slice(-4, -2);
+      
+      if (state === '00') {
+        _this.sendMsg("FFDF03002D230032");
+      }
     })
   },
 
@@ -467,17 +534,21 @@ Page({
   sendMsg(msg, toArrayBuf = true) {
     let _this = this;
     let buf = toArrayBuf ? this.hexStringToArrayBuffer(msg) : msg;
-    wx.writeBLECharacteristicValue({
-      deviceId: _this.data.device_id,
-      serviceId: _this.data.service_id,
-      characteristicId: _this.data.write_id,
-      value: buf,
-      success: function (res) {
-        console.log('--sendMsg:', res);
-      },
-      fail: function (res) {
-        console.log('--sendMsg err:', res);
-      }
+    return new Promise((resolve, reject) => {
+      wx.writeBLECharacteristicValue({
+        deviceId: _this.data.device_id,
+        serviceId: _this.data.service_id,
+        characteristicId: _this.data.write_id,
+        value: buf,
+        success: function (res) {
+          console.log('--sendMsg:', res);
+          resolve(res)
+        },
+        fail: function (err) {
+          console.log('--sendMsg err:', err);
+          reject(err)
+        }
+      })
     })
   },
 

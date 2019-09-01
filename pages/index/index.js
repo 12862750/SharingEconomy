@@ -11,7 +11,9 @@ Page({
     isFocus: false,
     isIPX: app.globalData.isIPX,
     userInfo: null,
+    keyWord: '',
     markers: [],
+    searchList: [],
     latitude: 23.099994,
     longitude: 113.324520,
     curDot: {}
@@ -177,6 +179,9 @@ Page({
   onMapTap() {
     this.setData({
       isFocus: false,
+      keyWord: '',
+      searchList: [],
+      isSearching: false,
     });
   },
   onMarkerTap({ markerId }) {
@@ -186,6 +191,9 @@ Page({
     const curDot = this.data.markers[markerId];
     this.setData({
       isFocus: true,
+      isSearching: false,
+      keyWord: '',
+      searchList: [],
       curDot: {
         ...curDot.data,
         phone: '13245678944',
@@ -243,16 +251,28 @@ Page({
   },
   onSearch(e) {
     const { value: words } = e.detail;
+    if (!words) {
+      return;
+    }
     if (this.timer) {
       clearTimeout(this.timer);
       this.timer = null;
     }
 
     this.timer = setTimeout(() => {
-      console.log('搜索，关键词：', words);
       fetchDotListByWords(words)
         .then(res => {
-          console.log(res);
+          this.setData({
+            keyWord: words,
+            searchList: res.data
+          })
+        })
+        .catch(err => {
+          console.log(err);
+          wx.showToast({
+            title: '查询失败，请重试',
+            icon: 'none',
+          })
         })
       clearTimeout(this.timer);
       this.timer = null;
@@ -261,16 +281,51 @@ Page({
   onSearchFocus() {
     this.setData({
       isSearching: true,
+      isFocus: false,
     });
   },
   onSearchBlur() {
-    this.setData({
-      isSearching: false,
-    });
+    if (!this.data.keyWord) {
+      this.setData({
+        isSearching: false,
+      });
+    }
   },
   goToPerson() {
     wx.navigateTo({
       url:'/pages/personal/personal'
     })
+  },
+  onSearchCardTap(e) {
+    const { id, nav } = e.currentTarget.dataset;
+    const { name, position: [longitude, latitude] } = this.data.searchList.find(item => item.id === id);
+
+    fetchDotListByLocation(latitude, longitude)
+      .then(({ pois }) => {
+        const locationMarker = this.data.markers[0];
+        const markers = [
+          locationMarker,
+          ...pois.map((item, index) => {
+            const [longi, lati] = item.location.split(',');
+            const marker = getDotMarker(lati, longi, index + 1, item);
+            if (name === item.name) {
+              return {
+                ...marker,
+                zIndex: 10,
+                width: '68rpx',
+                height: '76rpx',
+              }
+            } else {
+              return marker;
+            }
+          }),
+        ];
+
+        this.setData({
+          markers,
+          latitude,
+          longitude,
+        });
+      });
   }
 })

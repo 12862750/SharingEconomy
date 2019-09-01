@@ -119,7 +119,6 @@ export const payToStart = (data) => {
 /**
  * 获取订单记录
  */
-
 export const getOrderList = () => {
   return fetchWithToken(
     API.GET_ORDER_LIST
@@ -129,11 +128,42 @@ export const getOrderList = () => {
 /**
  * 提交加盟信息
  */
-
 export const submitAddJoin = (data) => {
   return fetchWithToken(
     API.ADD_JOIN,
     data,
     { method: 'POST' }
   )
+}
+
+/**
+ * 提交手机号
+ */
+export const postPhone = (phone) => {
+  fetchWithToken(
+    API.POST_PHONE,
+    {
+      newMobile: phone,
+      mobileCode: '', // 不知道这个是什么意思
+      uid: FETCH_CONFIG.UID
+    }
+  )
+}
+
+/**
+ * 获取订单状态
+ */
+export const getOrderState = (params) => {
+  return fetchWithToken(
+    API.GET_ORDER_STATE,
+    params
+  )
+    // 下面的代码在有真正接口的时候可以去掉
+    .then(res => res)
+    .catch(err => {
+      return {
+        state: 1, // 订单状态 0: 未使用；1: 使用中
+        timeUsed: 300, // 使用时长，秒
+      }
+    })
 }

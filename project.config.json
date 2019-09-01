@@ -6,7 +6,7 @@
 	"setting": {
 		"urlCheck": true,
 		"es6": true,
-		"enhance": false,
+		"enhance": true,
 		"postcss": true,
 		"minified": true,
 		"newFeature": true,
@@ -51,7 +51,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 4,
+			"current": 5,
 			"list": [
 				{
 					"id": 0,
@@ -85,6 +85,13 @@
 					"id": -1,
 					"name": "我要加盟",
 					"pathName": "pages/join/join",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "商家登录",
+					"pathName": "admin/login/login",
 					"scene": null
 				}
 			]

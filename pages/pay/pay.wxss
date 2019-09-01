@@ -98,3 +98,22 @@
   color: #53cd9a;
   margin-left: 12rpx;
 }
+
+.time-text {
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+  bottom: 100rpx;
+  text-align: center;
+  font-size: 32rpx;
+}
+
+.time-text .time{
+  font-size: 44rpx;
+  color: #53cd9a;
+}
+
+.ipx .time-text {
+  bottom: 140rpx;
+}

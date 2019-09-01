@@ -1,0 +1,52 @@
+/* admin/login/login.wxss */
+.login-container {
+  position: absolute;
+  top: -63rpx;
+  left: 56rpx;
+  right: 56rpx;
+  border-radius: 15rpx;
+  padding: 70rpx;
+  background-color: #fff;
+  box-shadow: 0 5px 10px #e6f9fb;
+}
+
+.login-input {
+  display: flex;
+  align-items: center;
+  padding: 26rpx 0;
+  border-bottom: 1px solid #ededed;
+}
+
+.login-input .icon {
+  width: 100rpx;
+  display: flex;
+  align-items: center;
+}
+
+.login-input input {
+  flex: 1;
+}
+
+.no-password {
+  padding: 40rpx 0;
+  color: #75afff;
+  text-align: right;
+  text-decoration: underline;
+}
+
+.login-btn {
+  position: absolute;
+  bottom: -30rpx;
+  width: 480rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: 34rpx;
+  color: #fff;
+  background: linear-gradient(to right, #36eae8 , #1ba2e8);
+  background-color: transparent;
+  margin: auto;
+}
+
+.login-btn::after {
+  border: none;
+}

@@ -188,3 +188,49 @@
   letter-spacing: 0rpx;
   color: #19a6ff;
 }
+
+.search-list {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 24rpx 24rpx 40rpx 24rpx;
+  background-color: #fff;
+}
+
+.search-list-item {
+  padding: 42rpx 100rpx 42rpx 28rpx;
+  border: 1px solid #e2f7ee;
+  border-radius: 20rpx;
+  font-size: 28rpx;
+  position: relative;
+}
+
+.search-list-item .name {
+  font-weight: bold;
+  letter-spacing: 8rpx;
+}
+
+.search-list-item .address,
+.search-list-item .phone {
+  letter-spacing: 4rpx;
+  margin-top: 26rpx;
+}
+
+.search-list-item .phone .num {
+  display: inline;
+  letter-spacing: 0rpx;
+  color: #19a6ff;
+}
+
+.search-list-item .nav-icon {
+  width: 25rpx;
+  height: 25rpx;
+  position: absolute;
+  right: 28rpx;
+  bottom: 42rpx;
+}
+
+.search-list-item + .search-list-item {
+  margin-top: 16rpx;
+}

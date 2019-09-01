@@ -25,6 +25,15 @@ export const API = {
   GET_ORDER_LIST: '/landing/mine/getConsumeList',
   // 提交加盟信息
   ADD_JOIN: '/landing/mine/addJoin',
+  // 上报手机号
+  POST_PHONE: '/session/updateMobile',
+  // 获取订单状态
+  GET_ORDER_STATE: '/landding/order/state',
+}
+
+export const ADMIN_API = {
+  // 登录
+  LOGIN: '/admin/login'
 }
 
 export const PAY_TYPE = {

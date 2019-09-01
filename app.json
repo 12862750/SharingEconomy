@@ -5,7 +5,9 @@
     "pages/personal/personal",
     "pages/about/about",
     "pages/join/join",
-    "pages/order/order"
+    "pages/order/order",
+    "admin/login/login",
+    "admin/no-password/no-password"
   ],
   "permission": {
     "scope.userLocation": {
