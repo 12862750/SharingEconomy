@@ -1,3 +1,5 @@
+import { FETCH_CONFIG } from './const';
+
 export const noob = () => {};
 
 export const checkSession = (token) => {
@@ -54,4 +56,31 @@ export const ab2hex = (buffer) => {
     }
   )
   return hexArr.join('');
+}
+
+export const fetch = (url, data = {}, options = {}) => {
+  return new Promise((resolve, reject) => {
+    wx.request({
+      url: `${FETCH_CONFIG.BASE_API}${url}`,
+      data,
+      ...options,
+      success(res) {
+        if (res.data.status === 'success') {
+          resolve(res.data);
+        } else {
+          reject(res.data);
+        }
+      },
+      fail(err) {
+        reject(err);
+      }
+    })
+  })
+}
+
+export const fetchWithToken = (url, data = {}, options = {}, isAdmin) => {
+  Object.assign(options, {
+    header: { 'HTTP-ACCESS-TOKEN': FETCH_CONFIG.TOKEN }
+  });
+  return fetch(url, data, options);
 }

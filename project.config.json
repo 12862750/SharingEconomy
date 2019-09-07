@@ -57,7 +57,7 @@
 					"id": 0,
 					"name": "支付页",
 					"pathName": "pages/pay/pay",
-					"query": "",
+					"query": "id=A00006",
 					"scene": null
 				},
 				{
@@ -89,9 +89,10 @@
 					"scene": null
 				},
 				{
-					"id": -1,
+					"id": 5,
 					"name": "商家登录",
 					"pathName": "admin/login/login",
+					"query": "",
 					"scene": null
 				}
 			]

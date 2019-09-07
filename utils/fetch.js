@@ -1,31 +1,5 @@
 import { API, FETCH_CONFIG } from './const';
-
-function fetch(url, data = {}, options = {}) {
-  return new Promise((resolve, reject) => {
-    wx.request({
-      url: `${FETCH_CONFIG.BASE_API}${url}`,
-      data,
-      ...options,
-      success(res) {
-        if (res.data.status === 'success') {
-          resolve(res.data);
-        } else {
-          reject(res.data);
-        }
-      },
-      fail(err) {
-        reject(err);
-      }
-    })
-  })
-}
-
-function fetchWithToken(url, data = {}, options = {}) {
-  Object.assign(options, {
-    header: { 'HTTP-ACCESS-TOKEN': FETCH_CONFIG.TOKEN }
-  });
-  return fetch(url, data, options);
-}
+import { fetch, fetchWithToken } from './util';
 
 /**
  * 根据wechatCode到后台登录
@@ -162,7 +136,7 @@ export const getOrderState = (params) => {
     .then(res => res)
     .catch(err => {
       return {
-        state: 1, // 订单状态 0: 未使用；1: 使用中
+        state: 0, // 订单状态 0: 未使用；1: 使用中
         timeUsed: 300, // 使用时长，秒
       }
     })

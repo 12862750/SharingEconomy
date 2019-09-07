@@ -81,7 +81,13 @@ Page({
 
     //开始初始化
     if (!this.data.connected) {
-      this.pageInit();
+      if (FETCH_CONFIG.TOKEN && FETCH_CONFIG.UID) {
+        this.pageInit();
+      } else {
+        app.loginReadyCallback = () => {
+          this.pageInit();
+        }
+      }
     }
   },
 
@@ -157,8 +163,11 @@ Page({
         return;
       }
 
+      this.orderInfo = orderInfo;
+
       if (orderInfo.state) {
         // 订单进行中，检测设备状态
+        this.isCheckingDevice = true;
         const [msgRes, msgErr] = await to(this.sendMsg('FFDF0401000000E4'));
 
         if (msgErr) {
@@ -260,7 +269,8 @@ Page({
             var rawData = result.result
             if (rawData.indexOf('成功') != -1) {
               //发送指令到设备
-              this.sendMsg("FFDF03002D230032");
+              const command = this.getCommandStr(this.data.deviceInfo.operatorName);
+              this.sendMsg(command);
               wx.showModal({
                 title: '支付结果',
                 content: rawData+':请等待设备开启！',
@@ -396,6 +406,7 @@ Page({
           if (device) {
             _this.setData({ device_id: device.deviceId})
             _this.connectDevice();
+            _this.stopSearch();
           }
         });
       },
@@ -500,13 +511,16 @@ Page({
       serviceId: _this.data.service_id,
       characteristicId: _this.data.notify_id,
       complete(res) {
-        console.log('--notifyBLECharacteristicValueChange:', res)
-        setTimeout(function () {
-          _this.onOpenNotify;
-        }, 1000);
-        _this.onNotifyChange();//接受消息
-        _this.stopSearch();
-        _this.checkDeviceState();
+        if (!_this.hadOpened) {
+          console.log('--notifyBLECharacteristicValueChange:', res)
+          setTimeout(function () {
+            _this.onOpenNotify;
+          }, 1000);
+          _this.onNotifyChange();//接受消息
+          _this.stopSearch();
+          _this.checkDeviceState();
+          _this.hadOpened = true;
+        }
       },
       fail(res) {
         console.log('启动notify:' + res.errMsg);
@@ -524,8 +538,11 @@ Page({
       console.log('--hex', ab2hex(res.value));
       const state = ab2hex(res.value).slice(-4, -2);
       
-      if (state === '00') {
-        _this.sendMsg("FFDF03002D230032");
+      if (_this.isCheckingDevice && state === '00') {
+        const time = _this.data.deviceInfo.operatorName - _this.orderInfo.timeUsed / 60;
+        const command = _this.getCommandStr(time);
+        _this.sendMsg(command);
+        _this.isCheckingDevice = false;
       }
     })
   },
@@ -608,6 +625,12 @@ Page({
 
     return service_id;
   },
+  getCommandStr(time) {
+    time = Number(time)
+    const valid = (271 + time + parseInt('00', 16)).toString(16).slice(-2).toUpperCase();
+    const time16 = time.toString(16).toUpperCase();
+    return `FFDF03002D${time16}00${valid}`;
+  }
   //-----结束------蓝牙使用方法
 
 })

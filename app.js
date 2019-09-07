@@ -30,6 +30,7 @@ App({
           FETCH_CONFIG.UID = result.uid;
           wx.setStorageSync('token', result.token);
           wx.setStorageSync('uid', result.uid);
+          this.loginReadyCallback && this.loginReadyCallback(result)
         }
       });
 
