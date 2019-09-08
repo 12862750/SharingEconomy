@@ -51,7 +51,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 5,
+			"current": 6,
 			"list": [
 				{
 					"id": 0,
@@ -92,6 +92,20 @@
 					"id": 5,
 					"name": "商家登录",
 					"pathName": "admin/login/login",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 6,
+					"name": "修改密码",
+					"pathName": "admin/change-password/change-password",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "商家首页",
+					"pathName": "admin/index/index",
 					"query": "",
 					"scene": null
 				}

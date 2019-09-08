@@ -1,0 +1,56 @@
+/* components/dialog/dialog.wxss */
+.dialog-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1992;
+  background-color: rgba(0,0,0,.2);
+}
+
+.dialog-box {
+  width: 68%;
+  position: absolute;
+  top: 420rpx;
+  left: 0;
+  right: 0;
+  margin: auto;
+  background-color: #fff;
+  border-radius: 10rpx;
+}
+
+.dialog-header {
+  font-size: 28rpx;
+  padding: 10rpx;
+  text-align: center;
+  border-bottom: 1px solid #e1e1e1;
+}
+
+.dialog-content {
+  padding: 20rpx;
+  position: relative;
+}
+
+.dialog-footer {
+  display: flex;
+  border-top: 2rpx solid #e1e1e1;
+}
+
+.dialog-footer button {
+  flex: 1;
+  height: 80rpx;
+  font-size: 32rpx;
+  background-color: transparent;
+  color: #26c1e8;
+  border-right: 1px solid #26c1e8;
+  border-radius: 0;
+}
+
+.dialog-footer button:last-child {
+  border-right: none;
+}
+
+.dialog-footer button::after {
+  display: none;
+}

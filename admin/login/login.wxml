@@ -5,13 +5,13 @@
       <view class="login-container">
         <view class="login-input">
           <view class="icon">
-            <image style="width: 36rpx; height: 24rpx;" src="/adminImgs/username.png"></image>
+            <image style="width: 36rpx; height: 24rpx;" src="/adminImgs/icon_username.png"></image>
           </view>
           <input bindinput="onInput" data-type="username" placeholder="请输入用户名" />
         </view>
         <view class="login-input">
           <view class="icon">
-            <image style="width: 30rpx; height: 36rpx;" src="/adminImgs/password.png"></image>
+            <image style="width: 30rpx; height: 36rpx;" src="/adminImgs/icon_password.png"></image>
           </view>
           <input bindinput="onInput" data-type="password" type="password" placeholder="请输入密码" />
         </view>

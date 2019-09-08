@@ -2,7 +2,9 @@ export const FETCH_CONFIG = {
   BASE_API: 'https://api.graphenec.cn/wechat/api/web_api',
   //BASE_API: 'http://localhost:8080/web_api',
   TOKEN: '',
+  ADMIN_TOKEN: '',
   UID: '',
+  ADMIN_UID: '',
   CODE: '',
 };
 
@@ -33,7 +35,15 @@ export const API = {
 
 export const ADMIN_API = {
   // 登录
-  LOGIN: '/admin/login'
+  LOGIN: '/admin/login',
+  // 获取验证码
+  GET_CODE: '/admin/getCode',
+  // 重置密码
+  RESET_PASSWORD: '/admin/resetPassword',
+  // 获取用户信息
+  GET_USER_INFO: '/admin/getUserInfo',
+  // 修改密码
+  CHANGE_PASSWORD: '/admin/changePassword'
 }
 
 export const PAY_TYPE = {

@@ -1,0 +1,66 @@
+<!--  bgFrom="#33e3e8" bgTo="#1ca5e8"  -->
+<full-page title="首页" bgImg="/adminImgs/bg.png" bgHeight="{{bgHeight}}px" bgFrom="#f6f6f6" bgTo="#f6f6f6">
+  <view class="full-container">
+    <view class="content">
+      <view class="main-header">
+        <view class="title">总收益（元）</view>
+        <view class="total">{{tool.formatterMoney(info.total)}}</view>
+        <view class="change-password-btn" bindtap="toChangePassword">
+          <text>修改密码</text>
+          <image src="/adminImgs/arrow_white_small.png" />
+        </view>
+      </view>
+      <view class="income-summry">
+        <template is="income" data="{{name: '今日收益', income: info.today}}"/>
+        <template is="income" data="{{name: '本月收益', income: info.curMonth}}"/>
+      </view>
+      <block wx:for="{{tool.getOperateList()}}" wx:key="{{index}}">
+        <view class="operate" bindtap="toOperatePage" data-type="{{item.type}}">
+          <view class="icon">
+            <image src="/adminImgs/icon_{{item.type}}.png" mode="cover" style="width: {{item.width}}rpx; height: {{item.height}}rpx" />
+          </view>
+          <text class="name">{{item.name}}</text>
+          <image class="arrow" src="/adminImgs/arrow_black.png" mode="cover" />
+        </view>
+      </block>
+    </view>
+  </view>
+</full-page>
+
+<template name="income">
+  <view class="income-item">
+    <text>{{name}}</text>
+    <text class="income-num">{{tool.formatterMoney(income)}}</text>
+  </view>
+</template>
+
+<wxs module="tool">
+var formatterMoney = function(num) {
+  num = Number(num).toFixed(2).split('.');
+  var int = num[0].split('');
+  var intList = [];
+  while(int.length > 0) {
+    intList.unshift(int.splice(-3).join(''));
+  }
+  return intList.join(',') + '.' + num[1]
+};
+
+var getOperateList = function() {
+  return [{
+    name: '代理商管理',
+    width: '35',
+    height: '37',
+    type: 'agent'
+  }, {
+    name: '店铺列表',
+    width: 37,
+    height: 38,
+    type: 'shop'
+  }]
+}
+
+module.exports = {
+  formatterMoney: formatterMoney,
+  getOperateList: getOperateList
+}
+</wxs>

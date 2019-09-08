@@ -1,0 +1,8 @@
+<!--  bgFrom="#33e3e8" bgTo="#1ca5e8"  -->
+<full-page title="店铺列表" bgFrom="#33e3e8" bgTo="#1ca5e8">
+  <view class="full-container">
+    <view class="content">
+      店铺列表
+    </view>
+  </view>
+</full-page>

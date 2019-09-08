@@ -1,0 +1,4 @@
+/* admin/shop/shop.wxss */
+.content {
+  background-color: #f6f6f6;
+}

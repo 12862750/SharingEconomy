@@ -1,0 +1,8 @@
+<!--  bgFrom="#33e3e8" bgTo="#1ca5e8"  -->
+<full-page title="代理商管理" bgFrom="#33e3e8" bgTo="#1ca5e8">
+  <view class="full-container">
+    <view class="content">
+      代理商管理
+    </view>
+  </view>
+</full-page>

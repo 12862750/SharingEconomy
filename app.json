@@ -7,7 +7,11 @@
     "pages/join/join",
     "pages/order/order",
     "admin/login/login",
-    "admin/no-password/no-password"
+    "admin/no-password/no-password",
+    "admin/index/index",
+    "admin/change-password/change-password",
+    "admin/agent/agent",
+    "admin/shop/shop"
   ],
   "permission": {
     "scope.userLocation": {

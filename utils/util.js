@@ -79,8 +79,12 @@ export const fetch = (url, data = {}, options = {}) => {
 }
 
 export const fetchWithToken = (url, data = {}, options = {}, isAdmin) => {
+  if (typeof options === 'boolean') {
+    isAdmin = options;
+    options = {};
+  }
   Object.assign(options, {
-    header: { 'HTTP-ACCESS-TOKEN': FETCH_CONFIG.TOKEN }
+    header: { 'HTTP-ACCESS-TOKEN': isAdmin ? FETCH_CONFIG.ADMIN_TOKEN : FETCH_CONFIG.TOKEN }
   });
   return fetch(url, data, options);
 }
