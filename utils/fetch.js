@@ -127,17 +127,8 @@ export const postPhone = (phone) => {
 /**
  * 获取订单状态
  */
-export const getOrderState = (params) => {
+export const getOrderState = () => {
   return fetchWithToken(
-    API.GET_ORDER_STATE,
-    params
+    API.GET_ORDER_STATE
   )
-    // 下面的代码在有真正接口的时候可以去掉
-    .then(res => res)
-    .catch(err => {
-      return {
-        state: 0, // 订单状态 0: 未使用；1: 使用中
-        timeUsed: 300, // 使用时长，秒
-      }
-    })
 }

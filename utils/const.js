@@ -30,7 +30,7 @@ export const API = {
   // 上报手机号
   POST_PHONE: '/session/updateMobile',
   // 获取订单状态
-  GET_ORDER_STATE: '/landding/order/state',
+  GET_ORDER_STATE: '/landing/order/state',
 }
 
 export const ADMIN_API = {
