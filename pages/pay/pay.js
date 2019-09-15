@@ -166,7 +166,7 @@ Page({
 
       this.orderInfo = orderInfo;
 
-      if (orderInfo.state) {
+      if (orderInfo.status === 1) {
         // 订单进行中，检测设备状态
         this.isCheckingDevice = true;
         const [msgRes, msgErr] = await to(this.sendMsg('FFDF0401000000E4'));
