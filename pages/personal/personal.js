@@ -69,7 +69,7 @@ Page({
     const { type } = e.currentTarget.dataset;
 
     if (type === 'admin') {
-      wx.reLaunch({
+      wx.navigateTo({
         url: '/admin/login/login',
       })
     } else {
