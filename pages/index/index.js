@@ -260,11 +260,18 @@ Page({
     }
 
     this.timer = setTimeout(() => {
-      fetchDotListByWords(words)
+      let queryRestaurantsParams = {
+        searchText: words,
+        startLatitude: this.data.latitude,
+        startLongitude: this.data.longitude,
+        endLatitude: this.data.latitude,
+        endLongitude: this.data.longitude
+      }
+      fetchDotListByWords(queryRestaurantsParams)
         .then(res => {
           this.setData({
             keyWord: words,
-            searchList: res.data
+            searchList: res.result
           })
         })
         .catch(err => {

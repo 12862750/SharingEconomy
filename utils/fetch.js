@@ -38,17 +38,11 @@ export const fetchDotListByLocation = (latitude, longitude) => {
  * @params words: 关键词
  * @return result: 附近网点
  */
-export const fetchDotListByWords = (words) => {
+export const fetchDotListByWords = (data) => {
   return fetch(
     API.GET_DOT_LIST_BY_WORDS,
-    { searchText: words }
-  )
-    .then((res) => {
-      return res.result;
-    })
-    .catch((err) => {
-      return Promise.reject(err);
-    });
+    data
+  );
 }
 
 /**
