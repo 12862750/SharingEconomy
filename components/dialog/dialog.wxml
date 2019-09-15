@@ -2,7 +2,8 @@
   <view class="dialog-box">
     <view wx:if="{{showHeader}}" class="dialog-header">{{header}}</view>
     <view class="dialog-content">
-      <slot></slot>
+      <image class="dialog-icon" mode="cover" src="/adminImgs/icon_dialog_{{type}}.png"  />
+      <view class="dialog-msg">{{msg}}</view>
     </view>
     <view wx:if="{{showFooter}}" class="dialog-footer">
       <button bindtap="onComfirm">{{comfirmText}}</button>

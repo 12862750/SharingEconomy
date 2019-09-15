@@ -25,6 +25,11 @@ Component({
       type: String,
       value: '取 消'
     },
+    msg: String,
+    type: {
+      type: String,
+      value: 'success'
+    }
   },
 
   /**

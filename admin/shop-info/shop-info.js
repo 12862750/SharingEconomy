@@ -1,6 +1,5 @@
-// admin/agent/agent.js
-import { showErrorToast, to } from '../../utils/util';
-import { getAgent } from '../../utils/admin-fetch';
+// admin/shop-info/shop-info.js
+import { getShopInfo } from '../../utils/admin-fetch';
 
 Page({
 
@@ -8,29 +7,33 @@ Page({
    * 页面的初始数据
    */
   data: {
-    agents: []
+    shop: {
+      name: '',
+      deviceCount: 0,
+      devices: []
+    }
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.shopId = options.id
   },
 
   onShow: function () {
-    this.fetchAgent();
+    this.fetchShopInfo();
   },
 
-  fetchAgent() {
+  fetchShopInfo() {
     wx.showLoading({
       title: '信息加载中',
     })
-    getAgent()
+    getShopInfo({ id: this.shopId })
       .then(res => {
         wx.hideLoading();
         this.setData({
-          agents: res.result
+          shop: res.result
         })
       })
       .catch(err => {
@@ -41,15 +44,15 @@ Page({
           showCancel: false,
           confirmText: '重试',
           success: () => {
-            this.getUserInfo();
+            wx.navigateBack();
           }
         })
       })
   },
 
-  goToAddAgent() {
+  goToAddDevice() {
     wx.navigateTo({
-      url: '/admin/add-agent/add-agent',
+      url: '/admin/add-device/add-device?id=' + this.shopId,
     })
   }
 })

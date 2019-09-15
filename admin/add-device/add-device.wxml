@@ -1,0 +1,47 @@
+<full-page title="设备列表" bgFrom="#33e3e8" bgTo="#1ca5e8">
+  <view class="full-container">
+    <view class="content">
+      <view class="card-warp">
+        <form bindsubmit="onSubmit">
+          <view class="info-item">
+            <text>店铺名称：</text>
+            <text>{{shopName}}</text>
+          </view>
+          <view class="form-item">
+            <label for="deviceCode">设备编号：</label>
+            <view class="form-input-wrap">
+              <input id="deviceCode" placeholder="单行输入" name="deviceCode" value="{{deviceNum}}" />
+              <view class="scan-btn">
+                <image src="/adminImgs/icon_scan.png" bindtap="onScan" />
+              </view>
+            </view>
+          </view>
+          <button class="submit-btn" form-type="submit">提 交</button>
+          <button class="reset-btn" form-type="reset">重 置</button>
+        </form>
+      </view>
+    </view>
+  </view>
+</full-page>
+
+<dialog
+  wx:if="{{dialog.show}}"
+  comfirmText="知道了"
+  showHeader="{{false}}"
+  showCancel="{{false}}"
+  bindcomfirm="onComfirm"
+  msg="{{dialog.msg}}"
+  type="{{dialog.success ? 'success' : 'fail'}}"
+/>
+
+<wxs module="var">
+  module.exports = {
+    columns: [{
+      label: '编号',
+      prop: 'deviceNum'
+    }, {
+      label: 'SN',
+      prop: 'SNCode'
+    }]
+  }
+</wxs>

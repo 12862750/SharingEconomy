@@ -1,0 +1,85 @@
+/* admin/add-device/add-device.wxss */
+.content {
+  background-color: #f6f6f6;
+  padding: 24rpx;
+}
+
+.card-warp {
+  border-radius: 8rpx;
+  background-color: #fff;
+  padding: 20rpx;
+  padding-bottom: 70rpx;
+}
+
+.card-title {
+  font-size: 28rpx;
+  line-height: 70rpx;
+  font-weight: bold;
+  border-bottom: 2px solid #e1e1e1;
+}
+
+.reset-btn,
+.submit-btn {
+  width: 480rpx;
+  line-height: 80rpx;
+  background-color: transparent;
+  color: #fff;
+  margin-top: 20rpx;
+}
+
+.reset-btn::after,
+.submit-btn::after {
+  display: none;
+}
+
+.submit-btn {
+  margin-top: 80rpx;
+  background: linear-gradient(to right, #36eae8 , #1ba2e8);
+}
+
+.reset-btn {
+  background: linear-gradient(to right, #b9ebea , #b1d7ea);
+}
+
+.info-item {
+  display: flex;
+  line-height: 80rpx;
+  font-size: 30rpx;
+  font-weight: bold;
+  justify-content: space-between;
+}
+
+.form-item {
+  display: flex;
+  align-items: center;
+  margin-top: 70rpx;
+  font-size: 28rpx;
+}
+
+.form-item label {
+  width: 160rpx;
+}
+
+.form-input-wrap {
+  flex: 1;
+  display: flex;
+  padding: 30rpx;
+  padding-right: 10rpx;
+  border: 1px solid #d7d7d7;
+  border-radius: 5rpx;
+}
+
+.form-input-wrap input {
+  flex: 1;
+}
+
+.scan-btn {
+  width: 50rpx;
+  height: 39rpx;
+  padding-left: 10rpx;
+}
+
+.scan-btn image {
+  width: 39rpx;
+  height: 39rpx;
+}

@@ -1,6 +1,6 @@
-// admin/agent/agent.js
-import { showErrorToast, to } from '../../utils/util';
-import { getAgent } from '../../utils/admin-fetch';
+// admin/income-detail/income-detail.js
+import { fetchImcomeRecords } from '../../utils/admin-fetch';
+import { showErrorToast } from '../../utils/util';
 
 Page({
 
@@ -8,36 +8,27 @@ Page({
    * 页面的初始数据
    */
   data: {
-    agents: []
+    total: 0,
+    records: []
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
-
-  },
-
-  onShow: function () {
-    this.fetchAgent();
-  },
-
-  fetchAgent() {
+  onLoad: function () {
     wx.showLoading({
       title: '信息加载中',
     })
-    getAgent()
+    const a = fetchImcomeRecords()
       .then(res => {
-        wx.hideLoading();
         this.setData({
-          agents: res.result
+          records: res.result
         })
       })
       .catch(err => {
-        wx.hideLoading();
         wx.showModal({
           title: '错误',
-          content: err.errmsg || '获取信息失败，请重试',
+          content: err.errmsg || '获取收入记录失败，请重试',
           showCancel: false,
           confirmText: '重试',
           success: () => {
@@ -45,11 +36,13 @@ Page({
           }
         })
       })
+      .finally(() => {
+        wx.hideLoading();
+      })
   },
-
-  goToAddAgent() {
+  goToCashGet() {
     wx.navigateTo({
-      url: '/admin/add-agent/add-agent',
+      url: '/admin/cash-get/cash-get',
     })
   }
 })

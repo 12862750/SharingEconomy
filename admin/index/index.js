@@ -30,7 +30,7 @@ Page({
     wx.showLoading({
       title: '信息加载中',
     })
-    const a = getUserInfo()
+    getUserInfo()
       .then(res => {
         this.setData({
           info: res.result
@@ -55,6 +55,12 @@ Page({
   toChangePassword() {
     wx.navigateTo({
       url: '/admin/change-password/change-password',
+    })
+  },
+
+  toIncomeDetail() {
+    wx.navigateTo({
+      url: '/admin/income-detail/income-detail',
     })
   },
 

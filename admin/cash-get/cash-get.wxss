@@ -1,4 +1,4 @@
-/* admin/change-password/change-password.wxss */
+/* admin/shop/shop.wxss */
 .content {
   background-color: #f6f6f6;
   padding: 24rpx;
@@ -52,4 +52,20 @@
 
 .form .comfirm-btn::after {
   display: none;
+}
+
+.remarks {
+  padding: 24rpx;
+  margin-top: 40rpx;
+  color: #333;
+  font-size: 28rpx;
+}
+
+.remarks .title {
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+
+.remarks view {
+  line-height: 60rpx;
 }

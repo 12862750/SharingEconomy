@@ -158,6 +158,7 @@ Page({
     });
     try {
       const [orderInfo, orderErr] = await to(getOrderState());
+      console.log(orderInfo);
       if (orderErr) {
         showErrorToast(orderErr.errmsg);
         return;

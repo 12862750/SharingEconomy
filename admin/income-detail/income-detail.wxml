@@ -1,0 +1,28 @@
+<!--  bgFrom="#33e3e8" bgTo="#1ca5e8"  -->
+<full-page title="收益明细" bgImg="/adminImgs/bg.png" bgHeight="{{bgHeight}}px" bgFrom="#f6f6f6" bgTo="#f6f6f6">
+  <view class="full-container">
+    <view class="content">
+      <view class="main-header" bindtap="toIncomeDetail">
+        <view class="title">我的余额</view>
+        <view class="total">{{util.formatterMoney(total)}}</view>
+        <button bindtap="goToCashGet">提现</button>
+      </view>
+      <view class="income-record">
+        <view class="title"><text>收入记录</text></view>
+        <view wx:if="{{!records.length}}">暂无收入记录</view>
+        <view class="record-item" wx:if="{{records.length}}" wx:for="{{records}}" wx:key="{{item.id}}">
+          <view>
+            <text class="title">{{item.title}}</text>
+            <text class="time">{{item.time}}</text>
+          </view>
+          <view>
+            <text class="balance">余额: {{util.formatterMoney(item.balance)}}</text>
+            <text class="payments">{{item.payments}}元</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</full-page>
+
+<wxs module="util" src="../../utils/tool.wxs"></wxs>
