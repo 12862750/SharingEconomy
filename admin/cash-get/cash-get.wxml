@@ -1,0 +1,30 @@
+<!--  bgFrom="#33e3e8" bgTo="#1ca5e8"  -->
+<full-page title="提现" bgFrom="#33e3e8" bgTo="#1ca5e8">
+  <view class="full-container">
+    <view class="content">
+      <form class="form" bindsubmit="onSubmit">
+        <view class="form-item">
+          <label for="amount">提现金额：</label>
+          <input id="amount" bindinput="onInput" placeholder="请输入金额" type="number" />
+        </view>
+        <button class="comfirm-btn" form-type="submit">提 现</button>
+      </form>
+      <view class="remarks">
+        <view class="title">提现须知</view>
+        <view>1. 每次提现的金额为100或100的整倍数</view>
+        <view>2. 每次提现收取0.6%的手续费</view>
+        <view>3. T+1到微信零钱账户</view>
+      </view>
+    </view>
+  </view>
+</full-page>
+
+<dialog
+  wx:if="{{dialog.show}}"
+  comfirmText="知道了"
+  showHeader="{{false}}"
+  showCancel="{{false}}"
+  bindcomfirm="onComfirm"
+  msg="{{dialog.msg}}"
+  type="{{dialog.success ? 'success' : 'fail'}}"
+/>

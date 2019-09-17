@@ -88,3 +88,28 @@ export const fetchWithToken = (url, data = {}, options = {}, isAdmin) => {
   });
   return fetch(url, data, options);
 }
+
+/**
+ * 上传
+ * 小程序只能一个一个上传
+ * @return 能访问的后台存储的地址
+ */
+export const uploadFile = (url, path) => {
+  console.log(url);
+  return new Promise((resolve, reject) => {
+    wx.uploadFile({
+      url,
+      filePath: path,
+      name: 'file',
+      header: {
+        'HTTP-ACCESS-TOKEN': FETCH_CONFIG.ADMIN_TOKEN
+      },
+      success(res) {
+        resolve(res);
+      },
+      fail(err) {
+        reject(err);
+      }
+    })
+  })
+}

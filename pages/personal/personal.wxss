@@ -75,6 +75,11 @@
   height: 29rpx;
 }
 
+.operation .icon .admin {
+  width: 28rpx;
+  height: 34rpx;
+}
+
 .operation .text {
   flex: 1;
   font-size: 28rpx;

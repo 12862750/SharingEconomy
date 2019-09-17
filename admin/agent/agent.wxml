@@ -2,7 +2,29 @@
 <full-page title="代理商管理" bgFrom="#33e3e8" bgTo="#1ca5e8">
   <view class="full-container">
     <view class="content">
-      代理商管理
+      <view class="card-warp">
+        <view class="card-title">代理商管理</view>
+        <table
+          columns="{{var.columns}}"
+          data="{{agents}}"
+        />
+        <button class="btn" bindtap="goToAddAgent">新 增</button>
+      </view>
     </view>
   </view>
 </full-page>
+
+<wxs module="var">
+  module.exports = {
+    columns: [{
+      label: '账号',
+      prop: 'acount'
+    }, {
+      label: '名称',
+      prop: 'name'
+    }, {
+      label: '手机号',
+      prop: 'phone'
+    }]
+  }
+</wxs>

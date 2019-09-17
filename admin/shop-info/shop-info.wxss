@@ -1,4 +1,4 @@
-/* admin/shop/shop.wxss */
+/* admin/shop-info/shop-info.wxss */
 .content {
   background-color: #f6f6f6;
   padding: 24rpx;
@@ -31,38 +31,15 @@
   display: none;
 }
 
-.shop-list {
- padding: 10rpx;
- line-height: 90rpx;
-}
-
-.no-data {
-  text-align: center;
-}
-
-.shop-list .shop-list-item {
+.info-item {
   display: flex;
+  line-height: 80rpx;
+  font-size: 30rpx;
+  font-weight: bold;
+  justify-content: space-between;
 }
 
-.shop-list .shop-list-item view:nth-child(1) {
-  flex: 0 0 40%;
-  text-align: left;
-}
-
-.shop-list .shop-list-item view:nth-child(2) {
-  flex: 0 0 30%;
-  text-align: center;
-}
-
-.shop-list .shop-list-item view:nth-child(3) {
-  flex: 0 0 30%;
-  text-align: right;
-}
-
-.shop-list .operation {
-  color: #7fb1ff;
-}
-
-.shop-list .operation text {
-  padding: 0 10rpx;
+.hr {
+  height: 2px;
+  background-color: #e1e1e1;
 }

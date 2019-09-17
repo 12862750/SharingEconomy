@@ -30,7 +30,7 @@ export const API = {
   // 上报手机号
   POST_PHONE: '/session/updateMobile',
   // 获取订单状态
-  GET_ORDER_STATE: '/landing/order/state',
+  GET_ORDER_STATE: '/landing/order/state'
 }
 
 export const ADMIN_API = {
@@ -43,7 +43,27 @@ export const ADMIN_API = {
   // 获取用户信息
   GET_USER_INFO: '/admin/getUserInfo',
   // 修改密码
-  CHANGE_PASSWORD: '/admin/changePassword'
+  CHANGE_PASSWORD: '/admin/changePassword',
+  // 获取收入记录
+  GET_INCOME_RECORDS: '/landing/income/records',
+  // 提现
+  TO_GET_CASH: '/landing/getCash',
+  // 获取代理商数据
+  GET_AGENT: '/landing/getAgent',
+  // 新增代理商
+  ADD_AGENT: '/landing/addAgent',
+  // 获取商铺数据
+  GET_SHOP: '/landing/getShop',
+  // 获取单个商铺信息
+  GET_SHOP_INFO: '/landing/getShopInfo',
+  // 新增设备
+  ADD_DEVICE: '/landing/addDevice',
+  // 删除店铺
+  DEL_SHOP: '/landing/delShop',
+  // 新增和修改店铺
+  SAVE_SHOP: '/landing/saveShop',
+  // 上传图片
+  UPLOAD_PIC: '/landing/uploadPic'
 }
 
 export const PAY_TYPE = {

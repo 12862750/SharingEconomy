@@ -2,10 +2,10 @@
 <full-page title="首页" bgImg="/adminImgs/bg.png" bgHeight="{{bgHeight}}px" bgFrom="#f6f6f6" bgTo="#f6f6f6">
   <view class="full-container">
     <view class="content">
-      <view class="main-header">
+      <view class="main-header" bindtap="toIncomeDetail">
         <view class="title">总收益（元）</view>
-        <view class="total">{{tool.formatterMoney(info.total)}}</view>
-        <view class="change-password-btn" bindtap="toChangePassword">
+        <view class="total">{{util.formatterMoney(info.total)}}</view>
+        <view class="change-password-btn" catchtap="toChangePassword">
           <text>修改密码</text>
           <image src="/adminImgs/arrow_white_small.png" />
         </view>
@@ -30,21 +30,12 @@
 <template name="income">
   <view class="income-item">
     <text>{{name}}</text>
-    <text class="income-num">{{tool.formatterMoney(income)}}</text>
+    <text class="income-num">{{util.formatterMoney(income)}}</text>
   </view>
 </template>
 
+<wxs module="util" src="../../utils/tool.wxs"></wxs>
 <wxs module="tool">
-var formatterMoney = function(num) {
-  num = Number(num).toFixed(2).split('.');
-  var int = num[0].split('');
-  var intList = [];
-  while(int.length > 0) {
-    intList.unshift(int.splice(-3).join(''));
-  }
-  return intList.join(',') + '.' + num[1]
-};
-
 var getOperateList = function() {
   return [{
     name: '代理商管理',
@@ -60,7 +51,6 @@ var getOperateList = function() {
 }
 
 module.exports = {
-  formatterMoney: formatterMoney,
   getOperateList: getOperateList
 }
 </wxs>

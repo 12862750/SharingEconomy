@@ -1,0 +1,114 @@
+/* admin/add-agent/add-agent.wxss */
+.content {
+  background-color: #f6f6f6;
+}
+
+.form-item {
+  background-color: #fff;
+  margin-bottom: 1px;
+  display: flex;
+  line-height: 50rpx;
+  padding: 25rpx;
+}
+
+.form-item label {
+  width: 220rpx;
+}
+
+.form-item input {
+  flex: 1;
+  height: 50rpx;
+}
+
+.form-item .get-code-btn {
+  display: inline-block;
+  height: 50rpx;
+  font-size: 24rpx;
+  padding: 0 12rpx;
+  line-height: 50rpx;
+  border-radius: 1rpx;
+  background-color: #27c2e8;
+  color: #fff;
+}
+
+.form-item .get-code-btn::after {
+  display: none;
+}
+
+.radio-group {
+  display: flex;
+}
+
+.radio-group label {
+  position: relative;
+  padding-left: 60rpx;
+}
+
+.radio-group label .radio {
+  width: 40rpx;
+  height: 40rpx;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+}
+
+.radio-group label .radio::before {
+  content: "";
+  width: 40rpx;
+  height: 40rpx;
+  position: absolute;
+  box-sizing: border-box;
+  border: 2rpx solid #959595;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  border-radius: 100%;
+}
+
+.radio-group label.active .radio::before {
+  border-color: #27c2e8;
+}
+
+.radio-group label.active .radio::after {
+  content: "";
+  position: absolute;
+  width: 30rpx;
+  height: 30rpx;
+  background-color: #27c2e8;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  border-radius: 100%;
+}
+
+.button-wrap {
+  height: 100rpx;
+  position: absolute;
+  display: flex;
+  bottom: 0;
+  width: 100%;
+}
+
+.button-wrap button {
+  background-color: transparent;
+  color: #fff;
+  width: 100%;
+  border-radius: 0;
+}
+
+.button-wrap button::after {
+  display: none;
+}
+
+.button-wrap .submit-btn {
+  background: linear-gradient(to right, #36eae8 , #1ba2e8);
+}
+
+.button-wrap .back-btn {
+  background: linear-gradient(to right, #b9ebea , #b1d7ea);
+}

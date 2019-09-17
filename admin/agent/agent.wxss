@@ -1,4 +1,32 @@
 /* admin/agent/agent.wxss */
 .content {
   background-color: #f6f6f6;
+  padding: 24rpx;
+}
+
+.card-warp {
+  border-radius: 8rpx;
+  background-color: #fff;
+  padding: 20rpx;
+}
+
+.card-title {
+  font-size: 28rpx;
+  line-height: 70rpx;
+  font-weight: bold;
+  border-bottom: 2px solid #e1e1e1;
+}
+
+.btn {
+  width: 480rpx;
+  line-height: 80rpx;
+  background: linear-gradient(to right, #36eae8 , #1ba2e8);
+  background-color: transparent;
+  color: #fff;
+  margin-top: 20rpx;
+  margin-bottom: -58rpx;
+}
+
+.btn::after {
+  display: none;
 }

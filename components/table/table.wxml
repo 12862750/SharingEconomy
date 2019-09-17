@@ -1,0 +1,12 @@
+<!--components/table/table.wxml-->
+<view class="table-wrap">
+  <view class="table-header" wx:if="{{showHeader}}">
+    <view wx:for="{{columns}}" wx:key="item.prop" style="{{item.width ? ('flex: 0 0' + item.width) : ''}}">{{item.label}}</view>
+  </view>
+  <view class="table-body">
+    <view wx:if="{{!data.length}}" class="no-data">暂无数据</view>
+    <view class="table-row" wx:if="{{data.length}}" wx:for="{{data}}" wx:for-item="row" wx:key="row.id">
+      <view wx:for="{{columns}}" style="{{col.width ? ('flex: 0 0' + col.width) : ''}}" wx:for-item="col" wx:key="col.prop">{{row[col.prop]}}</view>
+    </view>
+  </view>
+</view>

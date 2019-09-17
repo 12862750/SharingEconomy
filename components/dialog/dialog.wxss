@@ -54,3 +54,20 @@
 .dialog-footer button::after {
   display: none;
 }
+
+.dialog-icon {
+  width: 116rpx;
+  height: 111rpx;
+  display: block;
+  position: absolute;
+  top: 40rpx;
+  left: 50%;
+  margin-left: -49.5rpx;
+}
+
+.dialog-msg {
+  text-align: center;
+  padding-top: 200rpx;
+  padding-bottom: 80rpx;
+  font-size: 40rpx;
+}

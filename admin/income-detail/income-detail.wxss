@@ -1,0 +1,102 @@
+/* admin/index/index.wxss */
+.content {
+  background-color: transparent;
+}
+
+.main-header {
+  padding: 30rpx;
+  color: #fff;
+  text-align: center;
+  position: relative;
+}
+
+.main-header .title {
+  font-size: 30rpx;
+}
+
+.main-header .total {
+  font-size: 52rpx;
+  line-height: 80rpx;
+  margin-top: 20rpx;
+}
+
+.main-header button {
+  font-size: 30rpx;
+  width: 160rpx;
+  color: #fff;
+  line-height: 60rpx;
+  border-radius: 0;
+  background-color: transparent;
+}
+
+.main-header button::after {
+  border-color: #fff;
+  border-radius: 0;
+}
+
+.income-record {
+  background-color: #fff;
+  margin: 0 25rpx;
+  border-radius: 15rpx;
+  padding: 40rpx 24rpx;
+}
+
+.income-record .title {
+  font-size: 30rpx;
+}
+
+.income-record .title text {
+  position: relative;
+  padding-left: 2rpx;
+  padding-right: 14rpx;
+}
+
+.income-record .title text::before {
+  content: "收入记录";
+  position: absolute;
+  font-weight: bold;
+  z-index: 1;
+}
+
+.income-record .title text::after {
+  content: "";
+  height: 13rpx;
+  background: #bdf2ff;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: 4rpx;
+}
+
+.record-item {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20rpx;
+}
+
+.record-item view {
+  display: flex;
+  justify-content: space-between;
+  height: 80rpx;
+  align-items: center;
+}
+
+.record-item .title {
+  font-size: 30rpx;
+  font-weight: bold;
+}
+
+.record-item .time {
+  font-size: 28rpx;
+  color: #888;
+}
+
+.record-item .balance {
+  font-size: 28rpx;
+  color: #888;
+}
+
+.record-item .payments {
+  font-size: 36rpx;
+  font-weight: bold;
+}

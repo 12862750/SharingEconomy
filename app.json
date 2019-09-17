@@ -11,7 +11,13 @@
     "admin/index/index",
     "admin/change-password/change-password",
     "admin/agent/agent",
-    "admin/shop/shop"
+    "admin/shop/shop",
+    "admin/income-detail/income-detail",
+    "admin/cash-get/cash-get",
+    "admin/add-agent/add-agent",
+    "admin/shop-info/shop-info",
+    "admin/add-device/add-device",
+    "admin/add-shop/add-shop"
   ],
   "permission": {
     "scope.userLocation": {

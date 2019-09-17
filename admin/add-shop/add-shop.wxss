@@ -1,0 +1,101 @@
+/* admin/add-agent/add-agent.wxss */
+.content {
+  background-color: #f6f6f6;
+}
+
+.form-item {
+  background-color: #fff;
+  margin-bottom: 1px;
+  display: flex;
+  padding: 25rpx;
+  align-items: center;
+}
+
+.form-item label {
+  line-height: 50rpx;
+  width: 220rpx;
+}
+
+.form-item input {
+  flex: 1;
+  height: 50rpx;
+}
+
+.button-wrap {
+  height: 100rpx;
+  position: absolute;
+  display: flex;
+  bottom: 0;
+  width: 100%;
+}
+
+.button-wrap button {
+  background-color: transparent;
+  color: #fff;
+  width: 100%;
+  border-radius: 0;
+}
+
+.button-wrap button::after {
+  display: none;
+}
+
+.button-wrap .submit-btn {
+  background: linear-gradient(to right, #36eae8 , #1ba2e8);
+}
+
+.button-wrap .reset-btn {
+  background: linear-gradient(to right, #b9ebea , #b1d7ea);
+}
+
+.pic-select {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.pic-select .preview-image {
+  flex: 0 0 25%;
+  height: 120rpx;
+  margin-bottom: 20rpx;
+  padding: 4rpx;
+  box-sizing: border-box;
+}
+
+.add-pic-btn {
+  flex: 0 0 25%;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.add-pic-btn .add-icon {
+  box-sizing: border-box;
+  width: 100rpx;
+  height: 100rpx;
+  border: 2px dashed #d5d5d5;
+  margin: auto;
+  margin-bottom: 20rpx;
+  position: relative;
+}
+
+.add-pic-btn .add-icon::after,
+.add-pic-btn .add-icon::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  margin: auto;
+  background-color: #d5d5d5; 
+}
+
+.add-pic-btn .add-icon::before {
+  width: 56rpx;
+  height: 4rpx;
+}
+
+.add-pic-btn .add-icon::after {
+  width: 4rpx;
+  height: 56rpx;
+}

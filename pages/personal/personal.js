@@ -20,6 +20,7 @@ Page({
       { text: '订单记录', type: 'order' },
       { text: '关于我们', type: 'about' },
       { text: '我要加盟', type: 'join' },
+      { text: '商家中心', type: 'admin' }
     ]
   },
 
@@ -67,9 +68,16 @@ Page({
   onListTap(e) {
     const { type } = e.currentTarget.dataset;
 
-    wx.navigateTo({
-      url: `/pages/${type}/${type}`
-    })
+    if (type === 'admin') {
+      wx.navigateTo({
+        url: '/admin/login/login',
+      })
+    } else {
+      wx.navigateTo({
+        url: `/pages/${type}/${type}`
+      })
+    }
+
   },
 
   async onGetPhone(e) {

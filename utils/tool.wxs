@@ -1,0 +1,13 @@
+var formatterMoney = function (num) {
+  num = Number(num).toFixed(2).split('.');
+  var int = num[0].split('');
+  var intList = [];
+  while (int.length > 0) {
+    intList.unshift(int.splice(-3).join(''));
+  }
+  return intList.join(',') + '.' + num[1]
+};
+
+module.exports = {
+  formatterMoney: formatterMoney
+}

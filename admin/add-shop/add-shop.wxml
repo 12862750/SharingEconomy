@@ -1,0 +1,70 @@
+<!--  bgFrom="#33e3e8" bgTo="#1ca5e8"  -->
+<full-page title="{{pageTitle}}" bgFrom="#33e3e8" bgTo="#1ca5e8">
+  <view class="full-container">
+    <view class="content">
+      <form bindsubmit="onSubmit">
+        <view class="form-item">
+          <label for="deviceNum">设备编号：</label>
+          <input id="deviceNum" name="deviceNum" value="{{shop.deviceNum}}" placeholder="单行输入" />
+          <image style="width: 39rpx; height: 39rpx;" bindtap="onScanTap" src="/adminImgs/icon_scan.png" />
+        </view>
+        <view class="form-item">
+          <label for="name">店铺名称：</label>
+          <input id="name" name="name" value="{{shop.name}}" placeholder="请输入店铺名称" />
+        </view>
+        <view class="form-item">
+          <label for="position">店铺位置：</label>
+          <input id="position" name="position" value="{{shop.position}}" placeholder="请输入店铺位置" />
+          <image style="width: 25rpx; height: 25rpx;" bindtap="onNavTap" src="/adminImgs/icon_nav.png" />
+        </view>
+        <view class="form-item">
+          <label for="longitude">店铺经度：</label>
+          <input id="longitude" name="longitude" value="{{shop.longitude}}" type="number" />
+        </view>
+        <view class="form-item">
+          <label for="latitude">店铺纬度：</label>
+          <input id="latitude" name="latitude" value="{{shop.latitude}}" type="number" />
+        </view>
+        <view class="form-item" style="margin-bottom: 30rpx; align-items: flex-start;">
+          <label for="pic">店铺照片：</label>
+          <view class="pic-select">
+            <view
+              class="preview-image"
+              wx:for="{{shop.pic}}"
+              wx:key="{{item}}"
+            >
+              <image mode="aspectFill" src="{{item}}" style="width: 100%; height: 100%;" />
+            </view>
+            <view class="add-pic-btn" bindtap="onPicSelectTap">
+              <view class="add-icon"></view>
+              <text>添加预览图</text>
+            </view>
+          </view>
+        </view>
+        <view class="form-item">
+          <label for="contact">联系人：</label>
+          <input id="contact" name="contact" value="{{shop.contact}}" placeholder="请输入联系人" />
+        </view>
+        <view class="form-item">
+          <label for="phone">联系方式：</label>
+          <input id="phone" name="phone" type="number" value="{{shop.phone}}" placeholder="请输入联系方式" />
+        </view>
+
+        <view class="button-wrap">
+          <button class="reset-btn" form-type="reset">重 置</button>
+          <button class="submit-btn" form-type="submit">提 交</button>
+        </view>
+      </form>
+    </view>
+  </view>
+</full-page>
+
+<dialog
+  wx:if="{{dialog.show}}"
+  comfirmText="知道了"
+  showHeader="{{false}}"
+  showCancel="{{false}}"
+  bindcomfirm="onComfirm"
+  msg="{{dialog.msg}}"
+  type="{{dialog.success ? 'success' : 'fail'}}"
+/>

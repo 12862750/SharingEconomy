@@ -1,0 +1,34 @@
+<full-page title="设备列表" bgFrom="#33e3e8" bgTo="#1ca5e8">
+  <view class="full-container">
+    <view class="content">
+      <view class="card-warp">
+        <view class="info-item">
+          <text>店铺名称：</text>
+          <text>{{shop.name}}</text>
+        </view>
+        <view class="info-item">
+          <text>设备总计：</text>
+          <text>{{shop.deviceCount}}台</text>
+        </view>
+        <view class="hr"></view>
+        <table
+          columns="{{var.columns}}"
+          data="{{shop.devices}}"
+        />
+        <button class="btn" bindtap="goToAddDevice">新 增</button>
+      </view>
+    </view>
+  </view>
+</full-page>
+
+<wxs module="var">
+  module.exports = {
+    columns: [{
+      label: '编号',
+      prop: 'deviceNum'
+    }, {
+      label: 'SN',
+      prop: 'SNCode'
+    }]
+  }
+</wxs>
