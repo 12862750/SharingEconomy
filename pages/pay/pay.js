@@ -50,7 +50,7 @@ Page({
     // 蓝牙是否连接
     connected: false,
     device_info: ["BT","C"],//合法设备前缀
-    server_info: "0000FF",//合法服务前缀
+    server_info: ["0000FF","0000AE"],//合法服务前缀
     device_id: "",
     service_id: "",
     write_id: null,
@@ -107,7 +107,6 @@ Page({
 
       this.setData(infoRes);
 
-      this.connect();
       this.onNotifyChange(function (msg) {
         console.log(msg);
       })
@@ -124,12 +123,13 @@ Page({
       fetchUserBalance(),
       fetchDeviceInfo(this.data.deviceNumber)
     ])
-      .then(([{ result: userBalance }, { result: deviceInfo }]) => (
-        {
-          deviceInfo,
-          userBalance,
-        }
-      ))
+      .then(([{ result: userBalance }, { result: deviceInfo }]) => {
+          this.setData({
+               userBalance: userBalance,
+               deviceInfo: deviceInfo
+          })
+          this.connect()
+      })
       .catch((err) => Promise.reject(err));
   },
   setTimer() {
@@ -157,7 +157,7 @@ Page({
       title: '正在检查设备状态',
     });
     try {
-      const [orderInfo, orderErr] = await to(getOrderState());
+      const [orderInfo, orderErr] = await to(getOrderState(this.data.deviceInfo.deviceNumber));
       console.log(orderInfo);
       if (orderErr) {
         showErrorToast(orderErr.errmsg);
@@ -618,7 +618,8 @@ Page({
   filterService(services) {
     let service_id = "";
     for (let i = 0; i < services.length; i++) {
-      if (services[i].uuid.toUpperCase().indexOf(this.data.server_info) != -1) {
+      if (services[i].uuid.toUpperCase().indexOf(this.data.server_info[0]) != -1 ||
+          services[i].uuid.toUpperCase().indexOf(this.data.server_info[1]) != -1) {
         service_id = services[i].uuid;
         break;
       }
