@@ -121,8 +121,9 @@ export const postPhone = (phone) => {
 /**
  * 获取订单状态
  */
-export const getOrderState = () => {
+export const getOrderState = (deviceId) => {
   return fetchWithToken(
-    API.GET_ORDER_STATE
+    API.GET_ORDER_STATE,
+    {deviceId}
   )
 }
