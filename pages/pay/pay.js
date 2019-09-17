@@ -166,7 +166,7 @@ Page({
 
       this.orderInfo = orderInfo;
 
-      if (orderInfo.status === 1) {
+      if (orderInfo.result.status === 1 || orderInfo.result.status === 2) {
         // 订单进行中，检测设备状态
         this.isCheckingDevice = true;
         const [msgRes, msgErr] = await to(this.sendMsg('FFDF0401000000E4'));
@@ -178,7 +178,7 @@ Page({
 
         this.setData({
           orderState: 1,
-          timeText: this.data.deviceInfo.operatorName * 60 - orderInfo.timeUsed
+          timeText: this.data.deviceInfo.operatorName * 60 - orderInfo.result.timeUsed
         })
         this.setTimer();
       } else {
