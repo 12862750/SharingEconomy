@@ -170,7 +170,9 @@ Page({
       if ((orderInfo.result.status === 1 || orderInfo.result.status === 2) && timeText > 0) {
         // 订单进行中，检测设备状态
         this.isCheckingDevice = true;
-        const [msgRes, msgErr] = await to(this.sendMsg('FFDF0401000000E4'));
+        //发送指令到设备
+        const command = this.getCommandStr(timeText);
+        const [msgRes, msgErr] = await to(this.sendMsg(command));
 
         if (msgErr) {
           showErrorToast('获取设备状态出错，请重新扫码！');
