@@ -171,7 +171,9 @@ Page({
         // 订单进行中，检测设备状态
         this.isCheckingDevice = true;
         //发送指令到设备
-        const command = this.getCommandStr(timeText);
+        const time = this.data.deviceInfo.operatorName - parseInt(orderInfo.result.timeUsed / 60);
+        const command = this.getCommandStr(time);
+        debugger
         const [msgRes, msgErr] = await to(this.sendMsg(command));
 
         if (msgErr) {
@@ -543,7 +545,7 @@ Page({
       const state = ab2hex(res.value).slice(-4, -2);
       
       if (_this.isCheckingDevice && state === '00') {
-        const time = _this.data.deviceInfo.operatorName - _this.orderInfo.timeUsed / 60;
+        const time = _this.data.deviceInfo.operatorName - parseInt(_this.orderInfo.timeUsed / 60);
         const command = _this.getCommandStr(time);
         _this.sendMsg(command);
         _this.isCheckingDevice = false;
