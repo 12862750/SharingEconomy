@@ -173,9 +173,11 @@ Page({
         //发送指令到设备
         const time = this.data.deviceInfo.operatorName - parseInt(orderInfo.result.timeUsed / 60);
         const command = this.getCommandStr(time);
-        debugger
         const [msgRes, msgErr] = await to(this.sendMsg(command));
-
+        this.timer = setInterval(() => {
+          this.disconnect();
+        }, 10000)
+        
         if (msgErr) {
           showErrorToast('获取设备状态出错，请重新扫码！');
           return;
@@ -231,6 +233,7 @@ Page({
         that.setData({
           cardNum: scanCoupon
         });
+        that.onStartTap()
       },
       fail: (res) => {
         wx.showToast({
@@ -277,6 +280,9 @@ Page({
               //发送指令到设备
               const command = this.getCommandStr(this.data.deviceInfo.operatorName);
               this.sendMsg(command);
+              this.timer = setInterval(() => {
+                this.disconnect();
+              }, 10000)
               wx.showModal({
                 title: '支付结果',
                 content: rawData+':请等待设备开启！',
@@ -548,6 +554,9 @@ Page({
         const time = _this.data.deviceInfo.operatorName - parseInt(_this.orderInfo.timeUsed / 60);
         const command = _this.getCommandStr(time);
         _this.sendMsg(command);
+        _this.timer = setInterval(() => {
+          _this.disconnect();
+        }, 10000)
         _this.isCheckingDevice = false;
       }
     })
@@ -556,7 +565,9 @@ Page({
   //发送消息
   sendMsg(msg, toArrayBuf = true) {
     let _this = this;
+    console.log('--sendMsg msg:', msg);
     let buf = toArrayBuf ? this.hexStringToArrayBuffer(msg) : msg;
+    console.log('--sendMsg buf:', buf);
     return new Promise((resolve, reject) => {
       wx.writeBLECharacteristicValue({
         deviceId: _this.data.device_id,
@@ -597,8 +608,8 @@ Page({
     if (!str) {
       return new ArrayBuffer(0);
     }
-
-    var buffer = new ArrayBuffer(str.length);
+    var butInt = parseInt(str.length/2)
+    var buffer = new ArrayBuffer(butInt);
     let dataView = new DataView(buffer)
 
     let ind = 0;
@@ -635,8 +646,8 @@ Page({
   getCommandStr(time) {
     time = Number(time)
     const valid = (271 + time + parseInt('00', 16)).toString(16).slice(-2).toUpperCase();
-    const time16 = time.toString(16).toUpperCase();
-    return `FFDF03002D${time16}00${valid}`;
+    const time16 = '0' + time.toString(16).toUpperCase();
+    return `FFDF03002D${time16.slice(-2)}00${valid}`;
   }
   //-----结束------蓝牙使用方法
 
