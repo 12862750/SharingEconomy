@@ -99,6 +99,9 @@ Page({
     
     try {
       const [infoRes, infoErr] = await to(this.getInfo());
+
+      console.log('infoRes', infoRes);
+      console.log('infoErr', infoErr);
       if (infoErr) {
         showErrorToast(infoErr.errmsg);
         this.disconnect();
@@ -106,6 +109,8 @@ Page({
       }
 
       this.setData(infoRes);
+
+      this.connect();
 
       this.onNotifyChange(function (msg) {
         console.log(msg);
@@ -123,13 +128,10 @@ Page({
       fetchUserBalance(),
       fetchDeviceInfo(this.data.deviceNumber)
     ])
-      .then(([{ result: userBalance }, { result: deviceInfo }]) => {
-          this.setData({
-               userBalance: userBalance,
-               deviceInfo: deviceInfo
-          })
-          this.connect()
-      })
+      .then(([{ result: userBalance }, { result: deviceInfo }]) => ({
+        userBalance,
+        deviceInfo,
+      }))
       .catch((err) => Promise.reject(err));
   },
   setTimer() {
