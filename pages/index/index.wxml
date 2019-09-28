@@ -2,8 +2,9 @@
 <view class="container{{isIPX ?  ' ipx' : ''}}">
   <view class="top-bar">
     <view class="avatar" wx:if="{{!isSearching}}" bindtap="goToPerson">
-      <image mode="cover" wx:if="{{userInfo}}" src="{{userInfo.avatarUrl}}" />
-      <view class="default" wx:else></view>
+      <!-- <image mode="cover" wx:if="{{userInfo}}" src="{{userInfo.avatarUrl}}" /> -->
+      <open-data class="default" type="userAvatarUrl"></open-data>
+      <!-- <view class="default" wx:else></view> -->
     </view>
     <view class="search">
       <image class="icon" mode="cover" src="/images/search.png" />

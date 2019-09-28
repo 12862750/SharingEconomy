@@ -21,12 +21,19 @@ export const toLogin = (wechatCode) => {
  * @return result: 附近网点
  */
 export const fetchDotListByLocation = (latitude, longitude) => {
+  let queryRestaurantsParams = {
+    startLatitude: latitude,
+    startLongitude: longitude,
+    endLatitude: latitude,
+    endLongitude: longitude
+  }
+
   return fetch(
     API.GET_DOT_LIST_BY_LOCATION,
-    { latitude, longitude },
+    queryRestaurantsParams,
   )
     .then((res) => {
-      return res.result;
+      return res;
     })
     .catch((err) => {
       return Promise.reject(err);

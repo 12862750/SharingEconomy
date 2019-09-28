@@ -13,6 +13,7 @@
 
 .top-bar .avatar {
   padding: 0 20rpx;
+  width: 64rpx;
   height: 64rpx;
 }
 

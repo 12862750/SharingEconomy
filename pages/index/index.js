@@ -36,13 +36,15 @@ Page({
         // 根据经纬度获取附近网点
         return fetchDotListByLocation(latitude, longitude);
       })
-      .then(({ pois }) => {
+      .then(({ result }) => {
         // 设置附近网点、当前位置、地图中心
         const { latitude, longitude } = this.userLocation;
+        
         const markers = [
           getLocationMarker(latitude, longitude),
-          ...pois.map((item, index) => {
-            const [longi, lati] = item.location.split(',');
+          ...result.map((item, index) => {
+            const lati = item.longitude
+            const longi = item.latitude
             return getDotMarker(lati, longi, index + 1, item);
           }),
         ];
@@ -159,11 +161,12 @@ Page({
     this.getLocation()
       .then(({ latitude, longitude }) => {
         fetchDotListByLocation(latitude, longitude)
-          .then(({ pois }) => {
+          .then(({ result }) => {
             const markers = [
               getLocationMarker(latitude, longitude),
-              ...pois.map((item, index) => {
-                const [longi, lati] = item.location.split(',');
+              ...result.map((item, index) => {
+                const lati = item.longitude
+                const longi = item.latitude
                 return getDotMarker(lati, longi, index + 1, item);
               }),
             ];
@@ -225,12 +228,13 @@ Page({
       this.mapContext.getCenterLocation({
         success: ({ latitude, longitude }) => {
           fetchDotListByLocation(latitude, longitude)
-            .then(({ pois }) => {
+            .then(({ result }) => {
               const locationMarker = this.data.markers[0];
               const markers = [
                 locationMarker,
-                ...pois.map((item, index) => {
-                  const [longi, lati] = item.location.split(',');
+                ...result.map((item, index) => {
+                  const lati = item.longitude
+                  const longi = item.latitude
                   return getDotMarker(lati, longi, index + 1, item);
                 }),
               ];
@@ -308,12 +312,13 @@ Page({
     const { name, position: [longitude, latitude] } = this.data.searchList.find(item => item.id === id);
 
     fetchDotListByLocation(latitude, longitude)
-      .then(({ pois }) => {
+      .then(({ result }) => {
         const locationMarker = this.data.markers[0];
         const markers = [
           locationMarker,
-          ...pois.map((item, index) => {
-            const [longi, lati] = item.location.split(',');
+          ...result.map((item, index) => {
+            const lati = item.longitude
+            const longi = item.latitude
             const marker = getDotMarker(lati, longi, index + 1, item);
             if (name === item.name) {
               return {
