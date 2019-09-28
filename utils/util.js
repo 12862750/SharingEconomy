@@ -68,7 +68,9 @@ export const fetch = (url, data = {}, options = {}) => {
         if (res.data.status === 'success') {
           resolve(res.data);
         } else {
-          reject(res.data);
+          const err = new Error('请求出错');
+          err.code = res.statusCode;
+          reject(err);
         }
       },
       fail(err) {
