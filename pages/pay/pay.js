@@ -130,7 +130,22 @@ Page({
           })
           this.connect()
       })
-      .catch((err) => Promise.reject(err));
+      .catch(err => {
+        wx.login({
+          success: (res) => {
+            const { code } = res;
+            try {
+              debugger
+              toLogin(code);
+              setTimeout(() => {
+                this.pageInit();
+              }, 2000);
+            } catch (e) {
+              reject(e);
+            }
+          }
+        })
+      });
   },
   setTimer() {
     if (this.interval) {
@@ -550,15 +565,15 @@ Page({
       console.log('--hex', ab2hex(res.value));
       const state = ab2hex(res.value).slice(-4, -2);
       
-      if (_this.isCheckingDevice && state === '00') {
-        const time = _this.data.deviceInfo.operatorName - parseInt(_this.orderInfo.timeUsed / 60);
-        const command = _this.getCommandStr(time);
-        _this.sendMsg(command);
-        _this.timer = setInterval(() => {
-          _this.disconnect();
-        }, 10000)
-        _this.isCheckingDevice = false;
-      }
+      // if (_this.isCheckingDevice && state === '00') {
+      //   const time = _this.data.deviceInfo.operatorName - parseInt(_this.orderInfo.timeUsed / 60);
+      //   const command = _this.getCommandStr(time);
+      //   _this.sendMsg(command);
+      //   _this.timer = setInterval(() => {
+      //     _this.disconnect();
+      //   }, 10000)
+      //   _this.isCheckingDevice = false;
+      // }
     })
   },
 
